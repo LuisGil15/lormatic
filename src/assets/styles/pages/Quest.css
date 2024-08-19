@@ -1,0 +1,137 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.quest-container {
+    background-image: url('../../images/questBG.JPG');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #000;
+}
+
+.ink-container,
+.draws-container {
+    position: absolute;
+    margin: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.ink-container {
+    right: 0;
+}
+
+.ink-container .lore-text,
+.draws-container .lore-text {
+    font-size: 14px;
+    margin: 5px;
+}
+
+.ink,
+.draws {
+    background-color: #F7D87D;
+    border: 5px solid #5B296E;
+    width: 8vh;
+    height: 8vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 100%;
+    margin-top: 2px;
+}
+
+.ink-inner,
+.draws-inner {
+    background-color: #1D173B;
+    width: 30%;
+    height: 40%;
+    border: 4px solid #332A60;
+    color: #F7D87D;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.title {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.lore-text {
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    color: #F7D87D;
+    text-shadow: 0 0 5px #000, 
+               0 0 10px #000, 
+               0 0 15px #000;  
+}
+
+.lore-zone {
+    width: 100%;
+    display: block;
+    align-items: center;
+    justify-content: center;
+}
+
+.middle-zone,
+.game-zone {
+    display: flex;
+    width: 100%;
+    height: 40%;
+}
+
+.first-column,
+.second-column,
+.third-column {
+    display: flex;
+    width: 33%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.discard-zone,
+.deck-zone,
+.hand-zone {
+    background-color: rgb(40, 40, 76, 0.5);
+    width: 20%;
+    height: 100%;
+    border-radius: 5px;
+    height: 28vh;
+    width: auto;
+    max-width: 300px;
+    aspect-ratio: 733 / 1024;
+    margin-right: 25px;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.game-zone {
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.game-zone .body-card {
+    position: relative;
+}

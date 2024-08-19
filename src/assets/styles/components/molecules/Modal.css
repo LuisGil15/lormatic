@@ -1,0 +1,35 @@
+.modal-overlay {
+    position: flex; /* Posición fija para que el modal se quede en la pantalla al hacer scroll */
+    top: 0;          /* Alineado al inicio de la página */
+    left: 0;         /* Alineado al borde izquierdo */
+    width: 100%;     /* Cubrir todo el ancho de la pantalla */
+    height: 100%;    /* Cubrir toda la altura de la pantalla */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;   /* Centrado de contenido */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;   /* Valor alto para asegurarse de que se superpone a otros elementos */
+}
+
+.modal-content {
+    background-color: #F7EACE; /* Fondo blanco para el contenido del modal */
+    padding: 20px;           /* Espaciado interior */
+    border-radius: 5px;      /* Bordes redondeados */
+    position: relative;      /* Para que el botón de cierre esté relativo al contenido */
+    z-index: 1001;           /* Mayor que el z-index de .modal-overlay para que el contenido esté encima */
+    color: #3E2810;
+}
+
+.modal-close-button {
+    color: #3E2810;
+    background-color: #E8D8B5;
+    border-radius: 100%;
+    border-width: 0;
+    transform: scale(1.5);
+    cursor: pointer;
+    width: 2.5vh;
+    height: 2.5vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

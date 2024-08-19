@@ -1,0 +1,126 @@
+[
+    {
+        "cardNumber": 1,
+        "imagePath": "assets/images/cards/01-Anna-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 2,
+        "imagePath": "assets/images/cards/02-Bruno-Madrigal-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 3,
+        "imagePath": "assets/images/cards/03-Capitan-Garfio-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 4,
+        "imagePath": "assets/images/cards/04-Flotsam-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 5,
+        "imagePath": "assets/images/cards/05-Gaston-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 6,
+        "imagePath": "assets/images/cards/06-Heihei-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 7,
+        "imagePath": "assets/images/cards/07-Hercules-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 8,
+        "imagePath": "assets/images/cards/08-Jafar-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 9,
+        "imagePath": "assets/images/cards/09-Jetsam-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 10,
+        "imagePath": "assets/images/cards/10-Sombrerero-loco-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 11,
+        "imagePath": "assets/images/cards/11-Magica-de-spell-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 12,
+        "imagePath": "assets/images/cards/12-Minnie-Mouse-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 13,
+        "imagePath": "assets/images/cards/13-Principe-eric-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 14,
+        "imagePath": "assets/images/cards/14-Tiburon-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 15,
+        "imagePath": "assets/images/cards/15-Tamatoa-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 16,
+        "imagePath": "assets/images/cards/16-Hijas-de-triton-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 17,
+        "imagePath": "assets/images/cards/17-Volcar-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 18,
+        "imagePath": "assets/images/cards/18-Aguas-Revueltas-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 19,
+        "imagePath": "assets/images/cards/19-Ola-Aplastante-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 20,
+        "imagePath": "assets/images/cards/20-Magia-Enredadora-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 21,
+        "imagePath": "assets/images/cards/21-Golpe-Afortunado-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 22,
+        "imagePath": "assets/images/cards/22-Arremeter-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 23,
+        "imagePath": "assets/images/cards/23-Tormenta-de-rayos-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 24,
+        "imagePath": "assets/images/cards/24-Resaca-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 25,
+        "imagePath": "assets/images/cards/25-Golpe-de-Tentaculo-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 26,
+        "imagePath": "assets/images/cards/26-tsunami-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 27,
+        "imagePath": "assets/images/cards/27-Tifon-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 28,
+        "imagePath": "assets/images/cards/28-Remolino-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 29,
+        "imagePath": "assets/images/cards/29-Corona-de-triton-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 30,
+        "imagePath": "assets/images/cards/30-Contrato-de-ursula-Deep-Trouble.webp"
+    },
+    {
+        "cardNumber": 31,
+        "imagePath": "assets/images/cards/31-Tridente-robado-de-ursula-Deep-Trouble.webp"
+    }
+]

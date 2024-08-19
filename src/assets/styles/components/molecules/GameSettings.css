@@ -1,0 +1,89 @@
+.game-settings {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+}
+
+.section {
+    margin: 20px 0;
+}
+
+.players-control,
+.players-control.background,
+.difficulty-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.players-control button,
+.difficulty-option {
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.players-control span {
+    margin: 0 15px;
+    font-size: 24px;
+}
+
+.players-control.background {
+    margin: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.players-control.background span {
+    background-color: #E8D8B5;
+    width: 12vh;
+    height: 5vh;
+    margin: 0;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.difficulty-option {
+    padding: 10px;
+}
+
+.difficulty-option.selected {
+    background-color: #000;
+    color: #C3B27F;
+}
+
+.players-button.custom-button {
+    padding: 3px;
+    border-radius: 100%;
+    border: 3px solid #C3B27F;
+    margin: -15px;
+}
+
+.players-button .inner-custom-button {
+    width: 3vh;
+    height: 3vh;
+    padding: 5px;
+    border-radius: 100%;
+}
+
+.players-button.disabled {
+    opacity: 70%;
+    cursor: default;
+}
+
+.start-button-settings {
+    margin-top: 30px;
+    cursor: pointer;
+    font-size: 25px;
+    margin: auto;
+}
+
+.start-button-settings :first-child {
+    padding: 10px;
+}

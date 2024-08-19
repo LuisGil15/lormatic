@@ -1,0 +1,61 @@
+.counter-body {
+    display: flex;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter {
+    background-image: url('../../../images/loreCounter.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #F7D87D;
+    border: 5px solid #5B296E;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 1);
+    margin: 10px;
+}
+
+.counter span {
+    margin-top: 20px;
+    color: #F7D87D;
+    font-size: 20px;
+}
+
+.number {
+    font-size: 20px;
+    margin: 10px;
+    color: #fff;
+    text-shadow: 0 0 5px #fff, 
+               0 0 10px #fff, 
+               0 0 15px #fff;  
+}
+
+.number.special {
+    color: #F7D87D;
+    text-shadow: 0 0 5px #F7D87D, 
+               0 0 10px #F7D87D, 
+               0 0 15px #F7D87D;  
+}
+
+.sides {
+    width: 40%;
+}
+
+.left-side {
+    align-items: center;
+    justify-content: right;
+    display: flex;
+}
+
+.right-side {
+    align-items: center;
+    justify-content: left;
+    display: flex;
+}

@@ -1,0 +1,73 @@
+.body-card {
+    background-image: url('../../../images/cardBack.jpg');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    width: auto;
+    max-width: 300px;
+    height: 28vh;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 733 / 1024;
+    transition: transform 0.5s ease;
+    margin: 2vh;
+}
+
+/* .body-card.flipped:hover {
+  transform: scale(3);
+  position: absolute;
+  z-index: 10;
+  margin-top: -30%;
+} */
+
+.img-card {
+    width: 100%;
+    height: 100%;
+    background-color: #fff; 
+}
+
+.body-card.exerted {
+    transition: transform 0.5s ease;
+    transform: rotate(90deg);
+    margin: 0 7vh;
+}
+
+.flipped.newCard {
+    transform: rotateY(180deg);
+}
+
+.body-card.flipped.newCard .img-card {
+    transition: transform 1s ease;
+    transform: rotateY(180deg);
+}
+
+@keyframes drawCard {
+  from {
+    transform: translateX(-250%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.newCard {
+    animation: drawCard 0.5s ease-out;
+}
+
+@keyframes spawn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.card-animated {
+  animation: spawn 0.5s ease-out;
+}

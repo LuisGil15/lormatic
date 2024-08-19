@@ -1,0 +1,54 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.home-container {
+  background-image: url('../../images/lorcanaBackground.JPG');
+  background-size: 100% 100%, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+}
+
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25); /* Superposición negra con 50% de opacidad */
+  z-index: 1; /* Coloca la superposición por encima del fondo */
+}
+
+.home-container > * {
+  position: relative;
+  z-index: 2; /* Coloca el contenido por encima de la superposición */
+}
+
+.button-section {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  widht: auto;
+  height: auto; 
+  margin-bottom: 50px;
+}
+
+.start-button {
+    width: 25vh;
+    height: 7vh;
+    font-size: 25px; /* Tamaño de fuente */
+}
