@@ -29,6 +29,17 @@ body, html {
     right: 0;
 }
 
+.ink-container.apper {
+    transform: scale(1.3);
+    text-shadow: 0 0 5px #F7D87D, 
+               0 0 10px #F7D87D, 
+               0 0 15px #F7D87D; 
+}
+
+.ink-container {
+    transition: transform 1s ease;
+}
+
 .ink-container .lore-text,
 .draws-container .lore-text {
     font-size: 14px;

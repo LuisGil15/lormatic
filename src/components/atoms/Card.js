@@ -17,7 +17,6 @@ const Card = ({ properties, className }) => {
     }
 
     useEffect(() => {
-        console.log(isFlipped);
         setImagePath(getImagePath(cardNumber));
     }, []);
 

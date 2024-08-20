@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Button from "../components/atoms/Button";
@@ -12,21 +12,39 @@ import { cardActionsMap } from "../store/actions";
 
 import '../assets/styles/pages/Quest.css'
 
+const initialState = {
+    ink: 0,
+    deck: [],
+    hand: []
+};
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "SET_INK":
+            return { ...state, ink: action.payload };
+        case "SET_DECK":
+            return { ...state, deck: action.payload };
+        case "SET_HAND":
+            return { ...state, hand: action.payload };
+        default:
+            return state;
+    }
+}
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const Quest = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { players, difficulty } = location.state || {};
+    const [state, dispatch] = useReducer(reducer, initialState);
     const [lore, setLore] = useState(0);
     const [discardPile, setDiscardPile] = useState([]);
-    const [deck, setDeck] = useState([]);
-    const [hand, setHand] = useState([]);
     const [playArea, setPlayArea] = useState([]);
     const [shouldDrawCards, setShouldDrawCards] = useState(false);
     const [draws, setDraws] = useState(0);
-    const [ink, setInk] = useState(0);
     const [playersData, setPlayersData] = useState([]);
+    const [glowInk, setGlowInk] = useState(false);
 
     const handleLoreChange = (delta) => {
         setLore((prev) => {
@@ -35,18 +53,32 @@ const Quest = () => {
         });
     }
 
-    const handleInk = (delta) => {
-        setInk((prev) => {
-            const newCount = prev + delta;
-            return newCount > 0 ? newCount : 0;
-        });
+    const handleInk = async () => {
+        setGlowInk(true);
+
+        await sleep(300);
+
+        setGlowInk(false);
     }
 
-    const drawCard = () => {
-        if (deck.length > 0) {
-            const topCard = deck[0];
-            deck.shift();
-            setHand((prev) => [...prev, topCard]);
+    const drawCard = async (num2Draw) => {
+        let tmpHand = state.hand;
+
+        for (let i = 0; i < num2Draw; i++) {
+            if (state.deck.length > 0) {
+                const topCard = state.deck[0];
+
+                state.deck.shift();
+
+                tmpHand = [...tmpHand, topCard];
+
+                dispatch({
+                    type: "SET_HAND",
+                    payload: tmpHand,
+                });
+            }
+
+            await sleep(500);
         }
     }
 
@@ -79,7 +111,10 @@ const Quest = () => {
         setPlayersData(playersArray);
         setPlayArea((prev) => [...prev, searchCard(50)]);
 
-        setDeck(deckJson.filter(carta => carta.id !== 50));
+        dispatch({
+            type: "SET_DECK",
+            payload: deckJson.filter(carta => carta.id !== 50)
+        });
     }
 
     const getDraws = () => {
@@ -102,8 +137,8 @@ const Quest = () => {
               {
                 lore,
                 handleLoreChange,
-                ink,
-                setInk,
+                //ink,
+                //setInk,
                 playersData,
                 setPlayersData,
               },
@@ -144,11 +179,17 @@ const Quest = () => {
         if (tmpHand.length > 0) {
             const tmpCard = { ...tmpHand[tmpHand.length - 1], flipped: true };
 
-            setHand([...tmpHand.slice(0, -1), tmpCard]);
+            dispatch({
+                type: "SET_HAND",
+                payload: [...tmpHand.slice(0, -1), tmpCard]
+            });
 
             await sleep(1000)
 
-            setHand(tmpHand.slice(0, -1));
+            dispatch({
+              type: "SET_HAND",
+              payload: tmpHand.slice(0, -1)
+            });
 
             if (tmpInk >= tmpCard.inkCost) {
                 if (tmpCard.type === "item" || tmpCard.type === "character") {
@@ -156,14 +197,22 @@ const Quest = () => {
                 } else {
                     setDiscardPile((prev) => [...prev, tmpCard]);
                 }
+
+                await sleep(1000);
+
+                resolveHand(tmpHand.slice(0, -1), tmpInk);
             } else {
-                tmpInk++;
-                handleInk(1);
+                handleInk();
+
+                dispatch({
+                  type: "SET_INK",
+                  payload: Math.max(tmpInk + 1, 0)
+                });
+
+                await sleep(1000);
+
+                resolveHand(tmpHand.slice(0, -1), tmpInk + 1);
             }
-
-            await sleep(1000);
-
-            resolveHand(tmpHand.slice(0, -1), tmpInk);
         }
     }
 
@@ -175,7 +224,10 @@ const Quest = () => {
         setDraws(getDraws());
 
         //Shuffle cards and set on deck
-        setDeck(shuffleDeck(deckJson));
+        dispatch({
+            type: "SET_DECK",
+            payload: shuffleDeck(deckJson)
+        });
 
         //Set game at the begin
         if (playArea.length === 0) setGame();
@@ -186,10 +238,7 @@ const Quest = () => {
 
     useEffect(() => {
         const drawCardsWithDelay = async () => {
-            for (let i = 0; i < draws; i++) {
-                drawCard();
-                await sleep(500);
-            }
+            drawCard(draws);
 
             setShouldDrawCards(false);
         };
@@ -209,11 +258,11 @@ const Quest = () => {
             </div>
           </div>
         </div>
-        <div className="ink-container">
+        <div className={`ink-container ${glowInk ? "apper" : ""}`}>
           <span className="lore-text">INKWELL</span>
-          <div className="ink">
+          <div className={`ink ${glowInk ? "apper" : ""}`}>
             <div className="ink-inner">
-              <span>{ink}</span>
+              <span>{state.ink}</span>
             </div>
           </div>
         </div>
@@ -221,7 +270,7 @@ const Quest = () => {
           <span className="lore-text">URSULA</span>
         </div>
         <div className="lore-zone">
-          <CarruselCounter lore={lore} />
+          <CarruselCounter lore={lore} apper={glowInk} />
         </div>
         <div className="middle-zone">
           <div className="first-column">
@@ -236,8 +285,8 @@ const Quest = () => {
                 </div>
               )}
             </div>
-            <div className="deck-zone" onClick={() => drawCard()}>
-              {deck.length > 0 ? (
+            <div className="deck-zone" onClick={() => drawCard(1)}>
+              {state.deck.length > 0 ? (
                 <Card></Card>
               ) : (
                 <div className="deck">
@@ -248,8 +297,8 @@ const Quest = () => {
           </div>
           <div className="second-column">
             <div className="hand-zone">
-              {hand.length > 0 ? (
-                hand.map((card) => {
+              {state.hand.length > 0 ? (
+                state.hand.map((card) => {
                   return (
                     <Card
                       key={"hand" + card.id}
@@ -265,7 +314,8 @@ const Quest = () => {
               )}
             </div>
           </div>
-          <div className="third-column"></div>
+          <div className="third-column">
+          </div>
         </div>
         <div className="game-zone">
           {playArea.length > 0 ? (
@@ -281,7 +331,9 @@ const Quest = () => {
           ) : (
             <span></span>
           )}
-          <Button onClick={() => resolveHand(hand, ink)}>Resolve hand</Button>
+          <Button onClick={() => resolveHand(state.hand, state.ink)}>
+            Resolve hand
+          </Button>
           <Button onClick={() => resolvePlayArea()}>Resolve game zone</Button>
         </div>
       </div>
