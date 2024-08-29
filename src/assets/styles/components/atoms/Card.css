@@ -29,9 +29,19 @@
     background-color: #fff; 
 }
 
-.body-card.exerted {
-    transition: transform 0.5s ease;
+@keyframes exertedCard {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
     transform: rotate(90deg);
+    margin: 0 7vh;
+  }
+}
+
+.body-card.exerted {
+    transform: rotate(90deg);
+    animation: exertedCard 0.5s ease-out;
     margin: 0 7vh;
 }
 

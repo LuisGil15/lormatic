@@ -1,0 +1,52 @@
+@keyframes spawn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mensaje de fin de juego */
+.game-over-message {
+    /*background-color: #C3B27F;*/
+    padding: 20px 40px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    animation: spawn 0.2s ease-out;
+    justify-content: center;
+    align-items: center;
+}
+
+.lore-game-over {
+    color: #C3B27F;
+    font-size: 3vh;
+    margin-top: 3.5vh;
+}
+
+.winner {
+    margin-top: 20px;
+}
+
+.tittle {
+    font-size: 30px;
+}
+
+.quitButton {
+    background-color: rgb(0, 0, 0, 0.1);
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.quitButton:hover {
+    transform: scale(1.1);
+    background-color: rgb(255, 255, 255, 0.7);
+}

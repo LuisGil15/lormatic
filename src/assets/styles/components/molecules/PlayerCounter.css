@@ -1,3 +1,36 @@
+.player-container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.player-counter-container {
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.counter-button {
+    background-color: rgb(0, 0, 0, 0.5);
+    border-color: transparent;
+    border-radius: 50%;
+    width: 4vh;
+    height: 4vh;
+    color: #C3B27F;
+    font-size: 2vh;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin: 0;
+}
+
+.counter-button:hover {
+    background-color: rgb(255, 255, 255, 0.2);
+    transform: scale(1.2);
+}
+
 .player-counter {
     background-image: url('../../../images/loreCounterP.png');
     background-size: contain;
@@ -8,4 +41,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.player-counter-lore {
+    color: #C3B27F;
+    font-size: 3vh;
+    margin-top: 3.5vh;
+    text-shadow: 0 0 5px #000, 
+               0 0 10px #000, 
+               0 0 15px #000; 
+}
+
+.player-num {
+    color: #C3B27F;
+    font-size: 3vh;
+    text-shadow: 0 0 5px #000, 
+               0 0 10px #000, 
+               0 0 15px #000; 
 }

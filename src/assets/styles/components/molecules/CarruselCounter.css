@@ -10,7 +10,7 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: #F7D87D;
+    background-color: #C3B27F;
     border: 5px solid #5B296E;
     width: 100px;
     height: 100px;
@@ -25,15 +25,15 @@
 
 .counter span {
     margin-top: 20px;
-    color: #F7D87D;
+    color: #C3B27F;
     font-size: 20px;
 }
 
 .counter.apper {
     transform: scale(1.2);
-    text-shadow: 0 0 5px #F7D87D, 
-               0 0 10px #F7D87D, 
-               0 0 15px #F7D87D; 
+    text-shadow: 0 0 5px #C3B27F, 
+               0 0 10px #C3B27F, 
+               0 0 15px #C3B27F; 
 }
 
 .number {
@@ -46,10 +46,10 @@
 }
 
 .number.special {
-    color: #F7D87D;
-    text-shadow: 0 0 5px #F7D87D, 
-               0 0 10px #F7D87D, 
-               0 0 15px #F7D87D;  
+    color: #C3B27F;
+    text-shadow: 0 0 5px #C3B27F, 
+               0 0 10px #C3B27F, 
+               0 0 15px #C3B27F;  
 }
 
 .sides {
