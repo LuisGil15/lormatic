@@ -247,6 +247,16 @@ const Quest = () => {
         setGameOver(false);
     }
 
+    const getTotalLore = () => {
+        let total = 0;
+
+        for (let i = 0; i < playersData.length; i++) {
+            total += playersData[i].lore;
+        }
+
+        return total;
+    }
+
     useEffect(() => {
         //If you enter direct to quest skiping game settings, redirect to home
         if (players < 1) navigate("/");
@@ -394,7 +404,7 @@ const Quest = () => {
                 </div>
             </div>
             <Modal show={gameOver} onClose={() => continueGame()} >
-                <GameFinished lore={lore} winner={winner} />
+                <GameFinished lore={winner === "Ursula" ? lore : getTotalLore()} winner={winner} />
             </Modal>
         </div>
     );
