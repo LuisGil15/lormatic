@@ -302,6 +302,12 @@ const Quest = () => {
         }
     }, [lore]);
 
+    window.handleLoreChange = handleLoreChange;
+    window.resolveHand = resolveHand;
+    window.hand = state.hand;
+    window.ink = state.ink;
+    window.drawCard = drawCard;
+
     return (
         <div className="quest-container">
             <div className="draws-container">
@@ -396,11 +402,6 @@ const Quest = () => {
                     ) : (
                         <span></span>
                     )}
-                    <Button onClick={() => resolveHand(state.hand, state.ink)}>
-                        Resolve hand
-                    </Button>
-                    <Button onClick={() => resolvePlayArea()}>Resolve game zone</Button>
-                    <Button onClick={() => setPlayAreaReady()}>Game zone ready</Button>
                 </div>
             </div>
             <Modal show={gameOver} onClose={() => continueGame()} >
