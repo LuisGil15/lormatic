@@ -12,7 +12,8 @@
         "strength": 5,
         "defense": 6,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 2,
@@ -27,7 +28,8 @@
         "strength": 5,
         "defense": 6,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 3,
@@ -42,7 +44,8 @@
         "strength": 4,
         "defense": 4,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 4,
@@ -57,7 +60,8 @@
         "strength": 4,
         "defense": 4,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 5,
@@ -72,7 +76,8 @@
         "strength": 7,
         "defense": 4,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 6,
@@ -87,7 +92,8 @@
         "strength": 7,
         "defense": 4,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 7,
@@ -102,7 +108,8 @@
         "strength": 5,
         "defense": 5,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 8,
@@ -117,7 +124,8 @@
         "strength": 2,
         "defense": 4,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 9,
@@ -132,7 +140,8 @@
         "strength": 3,
         "defense": 2,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 10,
@@ -147,7 +156,8 @@
         "strength": 3,
         "defense": 2,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 11,
@@ -162,7 +172,8 @@
         "strength": 3,
         "defense": 7,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 12,
@@ -177,7 +188,8 @@
         "strength": 9,
         "defense": 9,
         "damage": 0,
-        "lore": 3
+        "lore": 3,
+        "init": false
     },
     {
         "id": 13,
@@ -192,7 +204,8 @@
         "strength": 5,
         "defense": 3,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 14,
@@ -207,7 +220,8 @@
         "strength": 3,
         "defense": 5,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 15,
@@ -222,7 +236,8 @@
         "strength": 3,
         "defense": 5,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 16,
@@ -237,7 +252,8 @@
         "strength": 4,
         "defense": 4,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 17,
@@ -252,7 +268,8 @@
         "strength": 4,
         "defense": 4,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 18,
@@ -267,7 +284,8 @@
         "strength": 6,
         "defense": 7,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": false
     },
     {
         "id": 19,
@@ -282,7 +300,8 @@
         "strength": 2,
         "defense": 5,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 20,
@@ -297,7 +316,8 @@
         "strength": 2,
         "defense": 5,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 21,
@@ -312,7 +332,8 @@
         "strength": 4,
         "defense": 7,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 22,
@@ -327,7 +348,8 @@
         "strength": 4,
         "defense": 7,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": true
     },
     {
         "id": 23,
@@ -342,7 +364,8 @@
         "strength": 3,
         "defense": 6,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": true
     },
     {
         "id": 24,
@@ -357,7 +380,8 @@
         "strength": 3,
         "defense": 6,
         "damage": 0,
-        "lore": 2
+        "lore": 2,
+        "init": true
     },
     {
         "id": 25,
@@ -372,7 +396,8 @@
         "strength": 2,
         "defense": 3,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 26,
@@ -387,7 +412,8 @@
         "strength": 2,
         "defense": 3,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 27,
@@ -402,7 +428,8 @@
         "strength": 2,
         "defense": 3,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 28,
@@ -417,7 +444,8 @@
         "strength": 2,
         "defense": 3,
         "damage": 0,
-        "lore": 1
+        "lore": 1,
+        "init": false
     },
     {
         "id": 29,
@@ -425,7 +453,8 @@
         "type": "action",
         "name": "Volcar",
         "inkCost": 3,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 30,
@@ -433,7 +462,8 @@
         "type": "action",
         "name": "Volcar",
         "inkCost": 3,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 31,
@@ -441,7 +471,8 @@
         "type": "action",
         "name": "Aguas revueltas",
         "inkCost": 3,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 32,
@@ -449,7 +480,8 @@
         "type": "action",
         "name": "Aguas revueltas",
         "inkCost": 3,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 33,
@@ -457,7 +489,8 @@
         "type": "action",
         "name": "Ola aplastante",
         "inkCost": 4,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 34,
@@ -465,7 +498,8 @@
         "type": "action",
         "name": "Magia enredadora",
         "inkCost": 2,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 35,
@@ -473,7 +507,8 @@
         "type": "action",
         "name": "Golpe afortunado",
         "inkCost": 0,
-        "flipped": false
+        "flipped": false,
+        "init": false 
     },
     {
         "id": 36,
@@ -481,7 +516,8 @@
         "type": "action",
         "name": "Arremeter",
         "inkCost": 2,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 37,
@@ -489,7 +525,8 @@
         "type": "action",
         "name": "Arremeter",
         "inkCost": 2,
-        "flipped": false
+        "flipped": false,
+        "init": true 
     },
     {
         "id": 38,
@@ -497,7 +534,8 @@
         "type": "action",
         "name": "Tormenta de rayos",
         "inkCost": 6,
-        "flipped": false
+        "flipped": false,
+        "init": false
     },
     {
         "id": 39,
@@ -505,7 +543,8 @@
         "type": "action",
         "name": "Resaca",
         "inkCost": 6,
-        "flipped": false
+        "flipped": false, 
+        "init": true
     },
     {
         "id": 40,
@@ -513,7 +552,8 @@
         "type": "action",
         "name": "Golpe de tentáculo",
         "inkCost": 2,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 41,
@@ -521,7 +561,8 @@
         "type": "action",
         "name": "Tsunami",
         "inkCost": 7,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 42,
@@ -529,7 +570,8 @@
         "type": "action",
         "name": "Tifón",
         "inkCost": 5,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 43,
@@ -537,7 +579,8 @@
         "type": "action",
         "name": "Tifón",
         "inkCost": 5,
-        "flipped": false
+        "flipped": false,
+        "init": true
     },
     {
         "id": 44,
@@ -545,7 +588,8 @@
         "type": "action",
         "name": "Remolino",
         "inkCost": 4,
-        "flipped": false
+        "flipped": false,
+        "init": false
     },
     {
         "id": 45,
@@ -554,7 +598,8 @@
         "name": "Corona hexwell",
         "inkCost": 3,
         "exerted": false,
-        "flipped":  false
+        "flipped":  false,
+        "init": false
     },
     {
         "id": 46,
@@ -563,7 +608,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false
+        "flipped":  false,
+        "init": false
     },
     {
         "id": 47,
@@ -572,7 +618,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false
+        "flipped":  false,
+        "init": false
     },
     {
         "id": 48,
@@ -581,7 +628,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false
+        "flipped":  false,
+        "init": false
     },
     {
         "id": 49,
@@ -590,7 +638,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false
+        "flipped":  false,
+        "init": false
     },
     {
         "id": 50,
@@ -599,6 +648,7 @@
         "name": "Tridente robado de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped": true
+        "flipped": true,
+        "init": false
     }
 ]

@@ -4,7 +4,7 @@ import galery from "../../data/galery.json";
 
 import '../../assets/styles/components/atoms/Card.css';
 
-const Card = ({ properties, className }) => {
+const Card = ({ properties, className, onClick }) => {
     const [isFlipped, setFlipped] = useState(properties ? properties.flipped : false);
     const [cardNumber, setCardNumber] = useState(properties ? properties.cardNumber : 0);
     const [name, setName] = useState(properties ? properties.name : "");
@@ -33,6 +33,7 @@ const Card = ({ properties, className }) => {
                 ${isExerted ? "exerted" : ""}
                 ${isFlipped ? "flipped" : ""}  
                 ${className ? className : ""}`}
+            onClick={() => onClick && onClick()}
         >
             {cardNumber != null && imagePath != null && isFlipped ?
                 <img

@@ -44,7 +44,7 @@ body, html {
 }
 
 .ink-container.apper {
-    transform: scale(1.3);
+    transform: scale(2);
     text-shadow: 0 0 5px #C3B27F, 
                0 0 10px #C3B27F, 
                0 0 15px #C3B27F; 
@@ -150,6 +150,15 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+.deck-cards {
+    color: white;
+    font-size: large;
+    position: absolute;
+    text-shadow: 0 0 5px #C3B27F, 
+               0 0 10px #C3B27F, 
+               0 0 15px #C3B27F;
+}
+
 .third-column {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -186,4 +195,49 @@ body, html {
 
 .modal-content {
     width: 20%;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes apperPreview {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(3);
+  }
+}
+
+.preview-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 9999;
+    animation: apperPreview 0.5s ease;
+    transform: translate(-50%, -50%) scale(3);
+}
+
+.resolve-button {
+    position: fixed;
+    right: 10%;
+    top: 50%;
+    transform: scale(1.5)
+}
+
+.resolve-button:hover {
+    position: fixed;
+    right: 10%;
+    top: 50%;
+    transform: scale(1.8)
+}
+
+.resolve-button span {
+    margin: 10px;
 }
