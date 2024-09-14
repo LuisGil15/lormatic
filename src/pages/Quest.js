@@ -18,6 +18,7 @@ const initialState = {
     ink: 0,
     deck: [],
     hand: [],
+    playArea: []
 };
 
 const reducer = (state, action) => {
@@ -28,6 +29,8 @@ const reducer = (state, action) => {
             return { ...state, deck: action.payload };
         case "SET_HAND":
             return { ...state, hand: action.payload };
+        case "SET_PLAY_AREA":
+            return { ...state, playArea: action.payload };
         default:
             return state;
     }
@@ -42,7 +45,6 @@ const Quest = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [lore, setLore] = useState(0);
     const [discardPile, setDiscardPile] = useState([]);
-    const [playArea, setPlayArea] = useState([]);
     const [shouldDrawCards, setShouldDrawCards] = useState(false);
     const [draws, setDraws] = useState(0);
     const [playersData, setPlayersData] = useState([]);
@@ -52,6 +54,8 @@ const Quest = () => {
     const [winner, setWinner] = useState("");
     const [lastState, setLastState] = useState({});
     const [activeCard, setActiveCard] = useState(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [turn, setTurn] = useState(true);
 
     const handleLoreChange = (delta) => {
         setLore((prev) => {
@@ -123,6 +127,10 @@ const Quest = () => {
     const searchCard = (id) => {
         const cardInfo = deckJson.find((c) => c.id === id);
 
+        if (id === 50) {
+            cardInfo.ready = true;
+        }
+
         return cardInfo;
     };
 
@@ -133,7 +141,11 @@ const Quest = () => {
         }));
 
         setPlayersData(playersArray);
-        setPlayArea((prev) => [...prev, searchCard(50)]);
+
+        dispatch({
+            type: "SET_PLAY_AREA",
+            payload: [...state.playArea, searchCard(50)]
+        });
 
         dispatch({
             type: "SET_DECK",
@@ -158,7 +170,7 @@ const Quest = () => {
 
     const playCard = (cardInfo, init) => {
         const action = cardActionsMap[cardInfo.cardNumber];
-        console.log(action);
+
         if (action) {
             action(
                 {
@@ -171,7 +183,9 @@ const Quest = () => {
                     setDiscardPile,
                     ink: state.ink,
                     deck: state.deck,
-                    dispatch
+                    playArea: state.playArea,
+                    dispatch,
+                    drawCard
                 },
                 cardInfo,
                 init
@@ -181,34 +195,126 @@ const Quest = () => {
         }
     };
 
-    const resolvePlayArea = () => {
-        for (let i = 0; i < playArea.length; i++) {
-            playCard(playArea[i], false);
-            updateCardExerted(playArea[i].id, true);
+    const sendToQuest = async () => {
+        const playAreaTmp = [...state.playArea];
+        let tmpLore = lore;
+
+        if (playAreaTmp.length == 0) {
+            return;
         }
-    };
 
-    const updateCardExerted = (cardId, exertedValue) => {
-        const updatedPlayArea = playArea.map((card) => {
-            if (card.id === cardId) {
-                return {
-                    ...card,
-                    exerted: exertedValue,
-                };
+        for (let i = 0; i < playAreaTmp.length; i++) {
+            let cardTmp = playAreaTmp[i];
+
+            if (cardTmp.type === "character" && cardTmp.ready && !cardTmp.exerted && tmpLore <= 40) {
+                handleLoreChange(cardTmp.lore);
+                tmpLore += cardTmp.lore;
+
+                dispatch({
+                    type: "SET_PLAY_AREA",
+                    payload: playAreaTmp.map((entry) => {
+                        if (entry.id === cardTmp.id) {
+                            entry.exerted = true;
+                        }
+
+                        return entry;
+                    })
+                });
+
+                await sleep(1000);
             }
+        }
 
-            return card;
-        });
-
-        setPlayArea(updatedPlayArea);
+        setTurn(false);
     };
 
-    const resolveHand = async (tmpHand, tmpInk) => {
+    const readyCharacters = () => {
+        dispatch({
+            type: "SET_PLAY_AREA",
+            payload: state.playArea.map((char) => {
+                return { ...char, ready: true };
+            })
+        });
+    }
+
+    const resolvePlayArea = async () => {
+        let playAreaTmp = [...state.playArea];
+
+        for (let i = 0; i < playAreaTmp.length; i++) {
+            let cardTmp = playAreaTmp[i];
+
+            dispatch({
+                type: "SET_PLAY_AREA",
+                payload: playAreaTmp.map((entry) => {
+                    if (entry.id === cardTmp.id) {
+                        entry.exerted = false;
+                        entry.ready = true;
+                    }
+
+                    return entry;
+                })
+            });
+
+            await sleep(500);
+        }
+
+        for (let i = 0; i < playAreaTmp.length; i++) {
+            // Copia del estado actual del playArea para evitar modificaciones directas
+            let cardTmp = { ...playAreaTmp[i] }; // Crea una copia de la carta actual
+
+            if (cardTmp.type === "item") {
+                playCard(cardTmp, false);
+
+                if (cardTmp.cardNumber !== 30) {
+                    // Actualiza el valor de exerted solo para la carta actual
+                    const updatedPlayArea = playAreaTmp.map((card) => {
+                        if (card.id === cardTmp.id) {
+                            return { ...card, exerted: true };
+                        }
+                        return card;
+                    });
+
+                    // Despacha el nuevo array actualizado
+                    dispatch({
+                        type: "SET_PLAY_AREA",
+                        payload: updatedPlayArea
+                    });
+
+                    // Asegura que el array se actualice en el estado
+                    playAreaTmp = [...updatedPlayArea];
+
+                } else {
+                    // Si la carta tiene el número 30, elimínala del playArea
+                    const updatedPlayArea = playAreaTmp.filter(card => card.id !== cardTmp.id);
+
+                    // Mueve la carta al discardPile
+                    setDiscardPile((prev) => [...prev, cardTmp]);
+
+                    // Despacha el nuevo array actualizado
+                    dispatch({
+                        type: "SET_PLAY_AREA",
+                        payload: updatedPlayArea
+                    });
+
+                    // Asegura que el array se actualice en el estado
+                    playAreaTmp = [...updatedPlayArea];
+                }
+
+                // Espera 700 ms antes de continuar con la siguiente carta
+                await sleep(700);
+            }
+        }
+
+        await sleep(500);
+
+        setShouldDrawCards(true);
+    };
+
+    const resolveHand = async (tmpHand, tmpInk, tmpPlayArea) => {
         if (tmpHand.length > 0) {
             const tmpCard = { ...tmpHand[tmpHand.length - 1], flipped: true };
 
             if (tmpCard.cardNumber === 17 && tmpInk <= 6) {
-                //tmpCard = { ...tmpCard, init: false };
                 tmpCard.init = false;
             }
 
@@ -219,8 +325,6 @@ const Quest = () => {
 
             await sleep(500);
 
-            console.log("Active card: ");
-            console.log(tmpCard);
             setActiveCard(tmpCard);
 
             dispatch({
@@ -241,7 +345,13 @@ const Quest = () => {
                         playCard(tmpCard, true);
                     }
 
-                    setPlayArea((prev) => [...prev, tmpCard]);
+                    tmpPlayArea = [...tmpPlayArea, tmpCard];
+
+                    dispatch({
+                        type: "SET_PLAY_AREA",
+                        payload: tmpPlayArea
+                    });
+
                 } else {
                     playCard(tmpCard, true);
                     setDiscardPile((prev) => [...prev, tmpCard]);
@@ -249,7 +359,11 @@ const Quest = () => {
 
                 await sleep(1000);
 
-                resolveHand(tmpHand.slice(0, -1), tmpInk);
+                if (tmpHand.length - 1 > 0) {
+                    resolveHand(tmpHand.slice(0, -1), tmpInk, tmpPlayArea);
+                } else {
+                    setIsPlaying(false);
+                }
             } else if (tmpInk === 0 || tmpInk < tmpCard.inkCost || tmpCard.init === false) {
                 await sleep(2000);
                 setActiveCard(null);
@@ -263,14 +377,36 @@ const Quest = () => {
 
                 await sleep(1000);
 
-                resolveHand(tmpHand.slice(0, -1), tmpInk + 1);
+                if (tmpHand.length - 1 > 0) {
+                    resolveHand(tmpHand.slice(0, -1), tmpInk + 1, tmpPlayArea);
+                } else {
+                    setIsPlaying(false);
+                }
             }
-            
+
         }
     };
 
     const setPlayAreaReady = () => {
-        playArea.map((card) => card.exerted = false);
+        const playAreaTmp = [...state.playArea];
+
+        for (let i = 0; i < playAreaTmp.length; i++) {
+            let cardTmp = playAreaTmp[i];
+
+            if (cardTmp.exerted) {
+
+                dispatch({
+                    type: "SET_PLAY_AREA",
+                    payload: playAreaTmp.map((entry) => {
+                        if (entry.id === cardTmp.id) {
+                            entry.exerted = false;
+                        }
+
+                        return entry;
+                    })
+                });
+            }
+        }
     }
 
     const continueGame = () => {
@@ -298,7 +434,10 @@ const Quest = () => {
                     activeCardTmp.exerted = true;
                 }
 
-                setPlayArea((prev) => [...prev, activeCardTmp]);
+                dispatch({
+                    type: "SET_PLAY_AREA",
+                    payload: [...state.playArea, activeCardTmp]
+                });
             } else {
                 playCard(activeCardTmp, true);
 
@@ -310,17 +449,21 @@ const Quest = () => {
                 }
             }
         } else {
-          setActiveCard(null);
+            setActiveCard(null);
 
-          handleInk();
+            handleInk();
 
-          dispatch({
-            type: "SET_INK",
-            payload: Math.max(state.ink + 1, 0)
-          });
+            dispatch({
+                type: "SET_INK",
+                payload: Math.max(state.ink + 1, 0)
+            });
         }
 
-        resolveHand(state.hand, state.ink);
+        if (state.hand.length > 0) {
+            resolveHand(state.hand, state.ink, state.playArea);
+        } else {
+            setIsPlaying(false);
+        }
     }
 
     const drawSpecificCard = (id) => {
@@ -343,22 +486,22 @@ const Quest = () => {
     }
 
     useEffect(() => {
-        //If you enter direct to quest skiping game settings, redirect to home
-        if (players < 1) navigate("/");
+        if (!gameReady) {
+            //If you enter direct to quest skiping game settings, redirect to home
+            if (players < 1) navigate("/");
 
-        //Set draw number depends on players and difficult
-        setDraws(getDraws());
+            //Set draw number depends on players and difficult
+            setDraws(getDraws());
 
-        //Shuffle cards and set on deck
-        dispatch({
-            type: "SET_DECK",
-            payload: shuffleDeck(deckJson)
-        });
+            //Shuffle cards and set on deck
+            dispatch({
+                type: "SET_DECK",
+                payload: shuffleDeck(deckJson)
+            });
 
-        //Set game at the begin
-        if (playArea.length === 0) setGame();
-
-        setShouldDrawCards(true);
+            //Set game at the begin
+            if (state.playArea.length === 0) setGame();
+        }
     }, []);
 
     useEffect(() => {
@@ -369,13 +512,18 @@ const Quest = () => {
 
     useEffect(() => {
         const drawCardsWithDelay = async () => {
-            drawCard(draws);
+            await drawCard(draws);
 
             setShouldDrawCards(false);
         };
 
-        if (shouldDrawCards) {
+        if (shouldDrawCards ) {
             drawCardsWithDelay();
+        } 
+
+        if (!isPlaying && turn && gameReady && state.hand.length > 0 && !shouldDrawCards) {
+            setIsPlaying(true);
+            resolveHand(state.hand, state.ink, state.playArea);
         }
     }, [shouldDrawCards]);
 
@@ -387,14 +535,25 @@ const Quest = () => {
         }
     }, [lore]);
 
+    useEffect(() => {
+        if (isPlaying == false && turn) {
+            sendToQuest();
+        }
+    }, [isPlaying]);
+
     window.handleLoreChange = handleLoreChange;
     window.resolveHand = resolveHand;
+    window.resolvePlayArea = resolvePlayArea;
     window.hand = state.hand;
     window.ink = state.ink;
     window.deck = state.deck;
     window.drawCard = drawCard;
     window.setActiveCard = setActiveCard;
     window.drawSpecificCard = drawSpecificCard;
+    window.readyCharacters = readyCharacters;
+    window.sendToQuest = sendToQuest;
+    window.playArea = state.playArea;
+    window.setPlayAreaReady = setPlayAreaReady;
 
     return (
       <div className="quest-container">
@@ -442,7 +601,9 @@ const Quest = () => {
                   <span>DECK</span>
                 </div>
               )}
-              {state.deck.length > 0 && (<span className="deck-cards">{state.deck.length}</span>)}
+              {state.deck.length > 0 && (
+                <span className="deck-cards">{state.deck.length}</span>
+              )}
             </div>
           </div>
           <div className="second-column">
@@ -454,7 +615,6 @@ const Quest = () => {
                       key={"hand" + card.id}
                       properties={card}
                       className={"newCard"}
-                      onClick={() => resolveHand(state.hand, state.ink)}
                     />
                   );
                 })
@@ -463,8 +623,18 @@ const Quest = () => {
                   <span>HAND</span>
                 </div>
               )}
-              <div></div>
             </div>
+            {!turn && (
+              <Button
+                onClick={() => {
+                    setTurn(true);
+                    resolvePlayArea();
+                }}
+                className={"end-turn-btn"}
+              >
+                <span>END TURN</span>
+              </Button>
+            )}
           </div>
           <div className="third-column">
             {playersData.map((player) => {
@@ -494,13 +664,19 @@ const Quest = () => {
         </div>
         <div className="game-zone">
           <div className="carousel">
-            {playArea.length > 0 ? (
-              playArea.map((card) => {
+            {state.playArea.length > 0 ? (
+              state.playArea.map((card) => {
                 return (
                   <Card
                     key={"game" + card.id}
                     properties={card}
-                    className={"card-animated"}
+                    className={`${
+                      isPlaying && !card.ready ? "card-animated" : ""
+                        } ${card.exerted ? "exerted" : ""}
+                        ${
+                        !card.ready &&
+                            card.type !== "item" &&
+                            !card.exerted ? "grayscale-image" : ""}`}
                   />
                 );
               })
@@ -508,7 +684,7 @@ const Quest = () => {
               <span></span>
             )}
           </div>
-        </div>  
+        </div>
         <Modal show={gameOver} onClose={() => continueGame()}>
           <GameFinished
             lore={winner === "Ursula" ? lore : getTotalLore()}

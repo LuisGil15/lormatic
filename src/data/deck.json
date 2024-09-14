@@ -454,6 +454,7 @@
         "name": "Volcar",
         "inkCost": 3,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -463,6 +464,7 @@
         "name": "Volcar",
         "inkCost": 3,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -472,6 +474,7 @@
         "name": "Aguas revueltas",
         "inkCost": 3,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -481,6 +484,7 @@
         "name": "Aguas revueltas",
         "inkCost": 3,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -490,6 +494,7 @@
         "name": "Ola aplastante",
         "inkCost": 4,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -499,6 +504,7 @@
         "name": "Magia enredadora",
         "inkCost": 2,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -508,6 +514,7 @@
         "name": "Golpe afortunado",
         "inkCost": 0,
         "flipped": false,
+        "ready": false,
         "init": false 
     },
     {
@@ -517,6 +524,7 @@
         "name": "Arremeter",
         "inkCost": 2,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -526,6 +534,7 @@
         "name": "Arremeter",
         "inkCost": 2,
         "flipped": false,
+        "ready": false,
         "init": true 
     },
     {
@@ -535,6 +544,7 @@
         "name": "Tormenta de rayos",
         "inkCost": 6,
         "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -544,6 +554,7 @@
         "name": "Resaca",
         "inkCost": 6,
         "flipped": false, 
+        "ready": false,
         "init": true
     },
     {
@@ -553,6 +564,7 @@
         "name": "Golpe de tentáculo",
         "inkCost": 2,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -562,6 +574,7 @@
         "name": "Tsunami",
         "inkCost": 7,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -571,6 +584,7 @@
         "name": "Tifón",
         "inkCost": 5,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -580,6 +594,7 @@
         "name": "Tifón",
         "inkCost": 5,
         "flipped": false,
+        "ready": false,
         "init": true
     },
     {
@@ -589,6 +604,7 @@
         "name": "Remolino",
         "inkCost": 4,
         "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -598,7 +614,8 @@
         "name": "Corona hexwell",
         "inkCost": 3,
         "exerted": false,
-        "flipped":  false,
+        "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -608,7 +625,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false,
+        "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -618,7 +636,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false,
+        "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -628,7 +647,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false,
+        "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -638,7 +658,8 @@
         "name": "Contrato de Úrsula",
         "inkCost": 0,
         "exerted": false,
-        "flipped":  false,
+        "flipped": false,
+        "ready": false,
         "init": false
     },
     {
@@ -649,6 +670,7 @@
         "inkCost": 0,
         "exerted": false,
         "flipped": true,
+        "ready": false,
         "init": false
     }
 ]

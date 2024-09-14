@@ -8,7 +8,6 @@ const Card = ({ properties, className, onClick }) => {
     const [isFlipped, setFlipped] = useState(properties ? properties.flipped : false);
     const [cardNumber, setCardNumber] = useState(properties ? properties.cardNumber : 0);
     const [name, setName] = useState(properties ? properties.name : "");
-    const [isExerted, setExerted] = useState(properties ? properties.exerted : false);
     const [imagePath, setImagePath] = useState("");
 
     const getImagePath = (id) => {
@@ -24,13 +23,11 @@ const Card = ({ properties, className, onClick }) => {
         setFlipped(properties ? properties.flipped : false);
         setCardNumber(properties ? properties.cardNumber : 0);
         setName(properties ? properties.name : "");
-        setExerted(properties ? properties.exerted : false);
      }, [properties]);
 
     return (
         <div
             className={`body-card 
-                ${isExerted ? "exerted" : ""}
                 ${isFlipped ? "flipped" : ""}  
                 ${className ? className : ""}`}
             onClick={() => onClick && onClick()}

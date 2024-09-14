@@ -12,8 +12,9 @@
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     aspect-ratio: 733 / 1024;
-    transition: transform 0.5s ease;
     margin: 2vh;
+    transition: all 0.5s ease;
+    transform: rotate(0deg);
 }
 
 /* .body-card.flipped:hover {
@@ -40,18 +41,24 @@
 }
 
 .body-card.exerted {
-    transform: rotate(90deg);
+    transition: all 0s ease;
     animation: exertedCard 0.5s ease-out;
+    transform: rotate(90deg);
     margin: 0 7vh;
 }
 
-.flipped.newCard {
+@keyframes flipCard {
+  from {
     transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(0);
+  }
 }
 
 .body-card.flipped.newCard .img-card {
-    transition: transform 1s ease;
-    transform: rotateY(180deg);
+    animation: flipCard 0.5s ease-out;
+    transform: rotateY(0);
 }
 
 @keyframes drawCard {
@@ -64,7 +71,7 @@
 }
 
 .newCard {
-    animation: drawCard 0.5s ease-out;
+  animation: drawCard 0.5s ease-out;
 }
 
 @keyframes spawn {
@@ -80,4 +87,8 @@
 
 .card-animated {
   animation: spawn 0.5s ease-out;
+}
+
+.grayscale-image {
+  filter: grayscale(100%) opacity(80%);
 }

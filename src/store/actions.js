@@ -1,4 +1,4 @@
-export const tridentItem = ({ handleLoreChange }, init) => {
+export const tridentItem = ({ handleLoreChange }, init, cardInfo) => {
     handleLoreChange(1);
 };
 
@@ -73,11 +73,21 @@ export const tentacleSwipe = ({ink, dispatch, handleInk}) => {
     });
 };
 
+export const hexwellCrown = ({drawCard}) => {
+    drawCard(1);
+};
+
+export const ursulasContract = ({ handleLoreChange }) => {
+    handleLoreChange(3);
+};
+
 export const cardActionsMap = {
     12: confusedPresence,
     17: capsize,
     20: entanglingMagic,
     23: lightningStorm,
     25: tentacleSwipe,
+    29: hexwellCrown,
+    30: ursulasContract,
     31: tridentItem
 };

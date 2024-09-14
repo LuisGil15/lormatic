@@ -7,7 +7,7 @@
 
 .player-counter-container {
     padding: 5px;
-    margin: 5px;
+    margin: 0px 5px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -22,7 +22,9 @@
     color: #C3B27F;
     font-size: 2vh;
     justify-content: center;
+    align-items: center;
     transition: all 0.3s ease;
+    padding: 0;
     margin: 0;
 }
 
@@ -37,7 +39,7 @@
     background-position: center;
     background-repeat: no-repeat;
     width: 15vh;
-    height: 15vh;
+    height: 13vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,7 +47,7 @@
 
 .player-counter-lore {
     color: #C3B27F;
-    font-size: 3vh;
+    font-size: 2.5vh;
     margin-top: 3.5vh;
     text-shadow: 0 0 5px #000, 
                0 0 10px #000, 
