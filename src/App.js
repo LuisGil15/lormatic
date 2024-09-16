@@ -6,7 +6,7 @@ import Quest from "./pages/Quest";
 function App() {
   return (
     <Routes>
-      <Route path="/lormatic" element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="/quest" element={<Quest />} />
     </Routes>
   );
