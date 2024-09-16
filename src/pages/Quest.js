@@ -65,6 +65,94 @@ const Quest = () => {
     const [damageAmount, setDamageAmount] = useState(0);
 
     const handleLoreChange = (delta) => {
+        if (difficulty !== "Easy") {
+            let initialDraws = 0;
+            let drawIncrement = 0;
+            let drawIncrementsAtLore = [];
+
+            switch (playersData.length) {
+                case 1:
+                    switch (difficulty) {
+                        case 'Easy':
+                            initialDraws = 2;
+                            break;
+                        case 'Normal':
+                            initialDraws = 2;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [20];
+                            break;
+                        case 'Hard':
+                        case 'Extreme':
+                            initialDraws = 3;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [20];
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (difficulty) {
+                        case 'Easy':
+                            initialDraws = 2;
+                            break;
+                        case 'Normal':
+                        case 'Hard':
+                        case 'Extreme':
+                            initialDraws = 2;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [10, 30];
+                            if (difficulty === 'Hard' || difficulty === 'Extreme') {
+                                initialDraws = 3;
+                            }
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (difficulty) {
+                        case 'Easy':
+                            initialDraws = 3;
+                            break;
+                        case 'Normal':
+                        case 'Extreme':
+                            initialDraws = 3;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [20];
+                            break;
+                        case 'Hard':
+                            initialDraws = 4;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [20];
+                            break;
+                    }
+                    break;
+                case 4:
+                    switch (difficulty) {
+                        case 'Easy':
+                            initialDraws = 3;
+                            break;
+                        case 'Normal':
+                        case 'Hard':
+                        case 'Extreme':
+                            initialDraws = 3;
+                            drawIncrement = 1;
+                            drawIncrementsAtLore = [10, 30];
+                            if (difficulty === 'Hard' || difficulty === 'Extreme') {
+                                initialDraws = 4;
+                            }
+                            break;
+                    }
+                    break;
+            }
+
+            let totalDraws = initialDraws;
+            for (let i = 0; i < drawIncrementsAtLore.length; i++) {
+                if (lore + delta >= drawIncrementsAtLore[i]) {
+                    totalDraws += drawIncrement;
+                }
+            }
+
+            setDraws(totalDraws);
+        }
+
         setLore((prev) => {
             const newCount = prev + delta;
             return newCount >= 0 && newCount <= 40 ? newCount : prev;
