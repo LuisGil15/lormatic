@@ -77,7 +77,7 @@ const Quest = () => {
     };
 
     const handlePlayer = (playerData) => {
-        const prevPlayersData = playersData;
+        const prevPlayersData = [...playersData];
 
         const newPlayersData = [
             ...playersData.filter((plyr) => plyr.id !== playerData.id),
@@ -90,6 +90,8 @@ const Quest = () => {
             setShowModal(true);
             setGameOver(true);
             setWinner("Players");
+            console.log("Prev data");
+            console.log(prevPlayersData);
             setLastState({ players: prevPlayersData, ursula: lore });
         }
     };
@@ -679,7 +681,7 @@ const Quest = () => {
                 <span className="lore-text">URSULA</span>
             </div>
             <div className="lore-zone">
-                <CarruselCounter lore={lore} apper={glowInk} />
+                <CarruselCounter lore={lore} apper={glowInk} handleLoreChange={handleLoreChange} />
             </div>
             <div className="middle-zone">
                 <div className="first-column">
@@ -697,7 +699,7 @@ const Quest = () => {
                             </div>
                         )}
                     </div>
-                    <div className="deck-zone" onClick={() => drawCard(1)}>
+                    <div className="deck-zone">
                         {state.deck.length > 0 ? (
                             <Card />
                         ) : (

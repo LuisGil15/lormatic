@@ -4,7 +4,7 @@ import "../../assets/styles/components/molecules/CarruselCounter.css";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const CarruselCounter = ({ lore, apper }) => {
+const CarruselCounter = ({ lore, apper, handleLoreChange }) => {
     const [glowInk, setGlowInk] = useState(false);
 
     const handleLore = async () => {
@@ -22,6 +22,11 @@ const CarruselCounter = ({ lore, apper }) => {
     return (
       <div className="counter-body">
         <div className="sides left-side">
+          {lore > 0 &&
+            <div className="left-arrow" onClick={() => handleLoreChange(-1)}>
+              <img className="left-arrow-img" src={require('../../assets/images/arrow.png')} />
+            </div>
+          }
           {[...Array(5)].map((_, i) => {
             const value = lore - (5 - i);
             return (
@@ -55,6 +60,11 @@ const CarruselCounter = ({ lore, apper }) => {
               </span>
             );
           })}
+          {lore < 40 &&
+            <div className="right-arrow" onClick={() => handleLoreChange(1)}>
+              <img className="right-arrow-img" src={require('../../assets/images/arrow.png')} />
+            </div>
+          }
         </div>
       </div>
     );

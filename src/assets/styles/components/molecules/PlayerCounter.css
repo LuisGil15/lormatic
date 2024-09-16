@@ -52,6 +52,7 @@
     text-shadow: 0 0 5px #000, 
                0 0 10px #000, 
                0 0 15px #000; 
+    transition: all 0.3s ease;
 }
 
 .player-num {
@@ -60,4 +61,11 @@
     text-shadow: 0 0 5px #000, 
                0 0 10px #000, 
                0 0 15px #000; 
+}
+
+.glow-lore {
+    transform: scale(1.2);
+    text-shadow: 0 0 5px #FFF, 
+               0 0 10px #FFF, 
+               0 0 15px #FFF; 
 }

@@ -67,3 +67,40 @@
     justify-content: left;
     display: flex;
 }
+
+.right-arrow, .left-arrow {
+    width: 6vh;
+    height: 6vh;
+    border-radius: 50%;
+    box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.right-arrow {
+    margin-left: 15px;
+}
+
+.right-arrow:hover {
+    transform: scale(1.2);
+    background-color: rgb(255, 255, 255, 0.3);
+}
+
+.left-arrow {
+    margin-right: 15px;
+}
+
+.left-arrow:hover {
+    transform: scale(1.2);
+    background-color: rgb(255, 255, 255, 0.3);
+}
+
+.right-arrow-img, .left-arrow-img {
+    width: 6vh;
+    height: 6vh;
+    border-radius: 50%;
+}
+
+.left-arrow-img {
+    transform: rotate(180deg);
+}
