@@ -1,8 +1,4 @@
 .body-card {
-    background-image: url('../../../images/cardBack.jpg');
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
     position: absolute;
     width: auto;
     max-width: 300px;
@@ -10,24 +6,33 @@
     border-radius: 5px;
     overflow: hidden;
     color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     aspect-ratio: 733 / 1024;
-    margin: 2vh;
-    transition: all 0.5s ease;
     transform: rotate(0deg);
+    perspective: 1000px;
+    display: flex;
 }
 
-/* .body-card.flipped:hover {
-  transform: scale(3);
+.back-card, .front-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  color: white;
+  aspect-ratio: 733 / 1024;
+  transition: all 5s ease;
   position: absolute;
-  z-index: 10;
-  margin-top: -30%;
-} */
+  backface-visibility: hidden;
+  transition: all 5s ease;
+}
 
-.img-card {
+.front-card {
     width: 100%;
     height: 100%;
     background-color: #fff; 
+}
+
+.back-card {
+  transform: rotateY(180deg);
 }
 
 @keyframes exertedCard {
@@ -47,18 +52,40 @@
     margin: 0 7vh;
 }
 
-@keyframes flipCard {
+@keyframes flipFrontCard {
   from {
     transform: rotateY(180deg);
   }
   to {
-    transform: rotateY(0);
+    transform: rotateY(0deg);
   }
 }
 
-.body-card.flipped.newCard .img-card {
-    animation: flipCard 0.5s ease-out;
-    transform: rotateY(0);
+@keyframes flipBackCard {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.body-card.flipped .front-card {
+  transform: rotateY(180deg);
+}
+
+.body-card.flipped .back-card {
+  transform: rotateY(0deg);
+}
+
+.body-card.notFlipped.newCard .front-card {
+    animation: flipFrontCard 0.5s ease-out;
+    transform: rotateY(0deg);
+}
+
+.body-card.notFlipped.newCard .back-card {
+    animation: flipBackCard 0.5s ease-out;
+    transform: rotateY(180deg);
 }
 
 @keyframes drawCard {
