@@ -7,6 +7,7 @@ import CarruselCounter from "../components/molecules/CarruselCounter";
 import PlayerCounter from "../components/molecules/PlayerCounter";
 import Modal from "../components/molecules/Modal";
 import GameFinished from "../components/molecules/GameFinished";
+import DamageCounter from "../components/molecules/DamageCounter";
 
 import deckJson from "../data/deck.json";
 
@@ -60,6 +61,8 @@ const Quest = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [turn, setTurn] = useState(true);
     const [banishedCard, setBanishedCard] = useState(null);
+    const [makeDamage, setMakeDamage] = useState(false);
+    const [damageAmount, setDamageAmount] = useState(0);
 
     const handleLoreChange = (delta) => {
         setLore((prev) => {
@@ -67,6 +70,14 @@ const Quest = () => {
             return newCount >= 0 && newCount <= 40 ? newCount : prev;
         });
     };
+
+    const handleDamageAmount = (delta) => {
+
+        setDamageAmount((prev) => {
+            const newCount = prev + delta;
+            return newCount >= 0 ? newCount : prev;
+        });
+    }
 
     const handleInk = async () => {
         setGlowInk(true);
@@ -117,6 +128,39 @@ const Quest = () => {
             exertCard(activeCard.id);
             setActiveCard(null);
             setConfirmExert(false);
+        }
+    };
+
+    const handleChallenge = (e) => {
+        e.stopPropagation();
+
+        if (makeDamage == false) {
+            setMakeDamage(true);
+        } else {
+            if ((damageAmount >= activeCard.defense) || (activeCard.damage + damageAmount >= activeCard.defense)) {
+                setBanishedCard({ ...activeCard });
+                setActiveCard(null);
+            } else {
+                const currentDmg = activeCard.damage;
+                const tmpCard = { ...activeCard, damage: currentDmg + damageAmount };
+                const tmpPlayArea = [...state.playArea];
+                const updatedPlayArea = tmpPlayArea.map((card) => { 
+                    if (card.id === tmpCard.id) {
+                        return { ...tmpCard }
+                    }
+
+                    return card;
+                });
+
+                dispatch({
+                    type: "SET_PLAY_AREA",
+                    payload: updatedPlayArea
+                });
+            }
+
+            setActiveCard(null);
+            setDamageAmount(0);
+            setMakeDamage(false);
         }
     };
 
@@ -584,6 +628,15 @@ const Quest = () => {
         if (activeCard === null && confirmBanish) {
             setConfirmBanish(false);
         }
+
+        if (activeCard === null && confirmExert) {
+            setConfirmExert(false);
+        }
+
+        if (activeCard === null && makeDamage) {
+            setDamageAmount(0);
+            setMakeDamage(false);
+        }
     }, [activeCard]);
 
     useEffect(() => {
@@ -805,6 +858,9 @@ const Quest = () => {
                             <span>RESOLVE</span>
                         </Button>
                     )}
+                    {makeDamage &&
+                        <DamageCounter damage={damageAmount} onDamageClick={(e) => handleDamageAmount(e)}/>
+                    }
                     {!turn &&
                         <div className="duel-zone">
                             {
@@ -816,8 +872,9 @@ const Quest = () => {
                             }
                             {(activeCard.type === "character" && activeCard.exerted) ?
                                 <Button
+                                    onClick={handleChallenge}
                                 >
-                                    <span>CHALLENGE</span>
+                                    <span>{makeDamage ? "CONFIRM" : "CHALLENGE"}</span>
                                 </Button> : activeCard.type === "character" && <Button
                                     onClick={handleExert}
                                 >

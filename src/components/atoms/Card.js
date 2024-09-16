@@ -45,7 +45,7 @@ const Card = ({ properties, className, onClick, showPrp}) => {
             <div className={`inner-card`}>
                 {showPrp && isFlipped && properties && properties.type === "character" &&
                     <div>
-                        <Shield value={properties.defense} />
+                        <Shield value={properties.defense - properties.damage} />
                         <Strength value={properties.strength} />
                     </div>
                 }
