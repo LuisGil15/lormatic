@@ -605,7 +605,7 @@
         "inkCost": 4,
         "flipped": false,
         "ready": false,
-        "init": false
+        "init": true
     },
     {
         "id": 45,

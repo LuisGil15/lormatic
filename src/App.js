@@ -7,7 +7,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/quest" element={<Quest />} />
+      <Route path="/lormatic/quest" element={<Quest />} />
     </Routes>
   );
 }

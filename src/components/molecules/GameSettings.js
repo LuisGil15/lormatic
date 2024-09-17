@@ -21,7 +21,7 @@ const GameSettings = ({ onSubmit }) => {
     };
 
     const handleSubmit = () => {
-        navigate('/quest', { state: { players, difficulty } });
+        navigate("/lormatic/quest", { state: { players, difficulty } });
     };
 
     return (
