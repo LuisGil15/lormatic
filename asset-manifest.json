@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/lormatic/static/css/main.cce8aaff.css",
-    "main.js": "/lormatic/static/js/main.6a0ede79.js",
+    "main.js": "/lormatic/static/js/main.86dab2b6.js",
     "static/media/questBG.JPG": "/lormatic/static/media/questBG.2776da7b39fdd5e4e90a.JPG",
     "static/media/cardBack.jpg": "/lormatic/static/media/cardBack.8fe86e97bdf4f8edf411.jpg",
     "static/media/IMG_7378.PNG": "/lormatic/static/media/IMG_7378.7b3cc28eda6284235f18.PNG",
@@ -46,10 +46,10 @@
     "static/media/logo.png": "/lormatic/static/media/logo.e3d7b19267c9051c242e.png",
     "index.html": "/lormatic/index.html",
     "main.cce8aaff.css.map": "/lormatic/static/css/main.cce8aaff.css.map",
-    "main.6a0ede79.js.map": "/lormatic/static/js/main.6a0ede79.js.map"
+    "main.86dab2b6.js.map": "/lormatic/static/js/main.86dab2b6.js.map"
   },
   "entrypoints": [
     "static/css/main.cce8aaff.css",
-    "static/js/main.6a0ede79.js"
+    "static/js/main.86dab2b6.js"
   ]
 }
