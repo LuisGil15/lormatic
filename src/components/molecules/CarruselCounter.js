@@ -22,11 +22,15 @@ const CarruselCounter = ({ lore, apper, handleLoreChange }) => {
     return (
       <div className="counter-body">
         <div className="sides left-side">
-          {lore > 0 &&
+          {lore > 0 && (
             <div className="left-arrow" onClick={() => handleLoreChange(-1)}>
-              <img className="left-arrow-img" src={require('../../assets/images/arrow.png')} />
+              <img
+                className="left-arrow-img"
+                src={require("../../assets/images/arrow.png")}
+                alt="Decrease lore"
+              />
             </div>
-          }
+          )}
           {[...Array(5)].map((_, i) => {
             const value = lore - (5 - i);
             return (
@@ -60,11 +64,15 @@ const CarruselCounter = ({ lore, apper, handleLoreChange }) => {
               </span>
             );
           })}
-          {lore < 40 &&
+          {lore < 40 && (
             <div className="right-arrow" onClick={() => handleLoreChange(1)}>
-              <img className="right-arrow-img" src={require('../../assets/images/arrow.png')} />
+              <img
+                className="right-arrow-img"
+                src={require("../../assets/images/arrow.png")}
+                alt="Increase lore"
+              />
             </div>
-          }
+          )}
         </div>
       </div>
     );
