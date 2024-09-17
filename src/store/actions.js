@@ -8,10 +8,10 @@ export const confusedPresence = ({ playersData, setPlayersData }, init) => {
 
         playerDataTmp.map((player) => {
             if (player.lore >= 2) {
-                player.lore -= 2;
-            } else {
-                player.lore = 0;
-            }
+                return {...player, lore: player.lore - 2};
+            } 
+
+            return { ...player, lore: 0 };
         });
 
         setPlayersData(playerDataTmp);
@@ -55,10 +55,10 @@ export const lightningStorm = ({ playersData, setPlayersData }) => {
 
     playerDataTmp.map((player) => {
         if (player.lore >= 3) {
-            player.lore -= 3;
-        } else {
-            player.lore = 0;
-        }
+            return { ...player, lore: player.lore - 3 };
+        } 
+        
+        return { ...player, lore: 0 };
     });
 
     setPlayersData(playerDataTmp);

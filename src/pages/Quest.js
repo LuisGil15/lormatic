@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, act } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/atoms/Button";
@@ -71,76 +71,86 @@ const Quest = () => {
             let drawIncrementsAtLore = [];
 
             switch (playersData.length) {
-                case 1:
-                    switch (difficulty) {
-                        case 'Easy':
-                            initialDraws = 2;
-                            break;
-                        case 'Normal':
-                            initialDraws = 2;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [20];
-                            break;
-                        case 'Hard':
-                        case 'Extreme':
-                            initialDraws = 3;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [20];
-                            break;
+              case 1:
+                switch (difficulty) {
+                  case "Easy":
+                    initialDraws = 2;
+                    break;
+                  case "Normal":
+                    initialDraws = 2;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [20];
+                    break;
+                  case "Hard":
+                  case "Extreme":
+                    initialDraws = 3;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [20];
+                    break;
+                  default:
+                    break;
+                }
+                break;
+              case 2:
+                switch (difficulty) {
+                  case "Easy":
+                    initialDraws = 2;
+                    break;
+                  case "Normal":
+                  case "Hard":
+                  case "Extreme":
+                    initialDraws = 2;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [10, 30];
+                    if (difficulty === "Hard" || difficulty === "Extreme") {
+                      initialDraws = 3;
                     }
                     break;
-                case 2:
-                    switch (difficulty) {
-                        case 'Easy':
-                            initialDraws = 2;
-                            break;
-                        case 'Normal':
-                        case 'Hard':
-                        case 'Extreme':
-                            initialDraws = 2;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [10, 30];
-                            if (difficulty === 'Hard' || difficulty === 'Extreme') {
-                                initialDraws = 3;
-                            }
-                            break;
+                  default:
+                    break;
+                }
+                break;
+              case 3:
+                switch (difficulty) {
+                  case "Easy":
+                    initialDraws = 3;
+                    break;
+                  case "Normal":
+                  case "Extreme":
+                    initialDraws = 3;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [20];
+                    break;
+                  case "Hard":
+                    initialDraws = 4;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [20];
+                    break;
+                  default:
+                    break;
+                }
+                break;
+              case 4:
+                switch (difficulty) {
+                  case "Easy":
+                    initialDraws = 3;
+                    break;
+                  case "Normal":
+                  case "Hard":
+                  case "Extreme":
+                    initialDraws = 3;
+                    drawIncrement = 1;
+                    drawIncrementsAtLore = [10, 30];
+                    if (difficulty === "Hard" || difficulty === "Extreme") {
+                      initialDraws = 4;
                     }
                     break;
-                case 3:
-                    switch (difficulty) {
-                        case 'Easy':
-                            initialDraws = 3;
-                            break;
-                        case 'Normal':
-                        case 'Extreme':
-                            initialDraws = 3;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [20];
-                            break;
-                        case 'Hard':
-                            initialDraws = 4;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [20];
-                            break;
-                    }
+                  default:
                     break;
-                case 4:
-                    switch (difficulty) {
-                        case 'Easy':
-                            initialDraws = 3;
-                            break;
-                        case 'Normal':
-                        case 'Hard':
-                        case 'Extreme':
-                            initialDraws = 3;
-                            drawIncrement = 1;
-                            drawIncrementsAtLore = [10, 30];
-                            if (difficulty === 'Hard' || difficulty === 'Extreme') {
-                                initialDraws = 4;
-                            }
-                            break;
-                    }
-                    break;
+                }
+                break;
+              default:
+                break;
             }
 
             let totalDraws = initialDraws;
@@ -222,7 +232,7 @@ const Quest = () => {
     const handleChallenge = (e) => {
         e.stopPropagation();
 
-        if (makeDamage == false) {
+        if (!makeDamage) {
             setMakeDamage(true);
         } else {
             if ((damageAmount >= activeCard.defense) || (activeCard.damage + damageAmount >= activeCard.defense)) {
