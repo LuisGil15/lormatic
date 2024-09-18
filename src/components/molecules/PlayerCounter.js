@@ -38,7 +38,7 @@ const PlayerCounter = ({ lore, id, onClick }) => {
                     +
                 </button>
             </div>
-            <span className="player-num">Player {id}</span>
+            <span className="player-num">Jugador {id}</span>
         </div>
     );
 }

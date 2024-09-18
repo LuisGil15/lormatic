@@ -7,7 +7,7 @@ import "../../assets/styles/components/molecules/GameSettings.css";
 const GameSettings = ({ onSubmit }) => {
     const navigate = useNavigate();
     const [players, setPlayers] = useState(2);
-    const [difficulty, setDifficulty] = useState("Easy");
+    const [difficulty, setDifficulty] = useState("Facil");
 
     const handlePlayersChange = (delta) => {
         setPlayers((prev) => {
@@ -29,7 +29,7 @@ const GameSettings = ({ onSubmit }) => {
             <h2>ILLUMINEER'S QUEST</h2>
             <p>Deep Trouble</p>
             <div className="section">
-                <p>Players</p>
+                <p>Jugadores</p>
                 <div className="players-control background">
                     <Button
                         className={`players-button ${players === 1 ? "disabled" : ""
@@ -49,9 +49,9 @@ const GameSettings = ({ onSubmit }) => {
                 </div>
             </div>
             <div className="section">
-                <p>Difficulty</p>
+                <p>Dificultad</p>
                 <div className="difficulty-options">
-                    {["Easy", "Normal", "Hard", "Extreme"].map((level) => (
+                    {["Facil", "Normal", "Dificil", "Extremo"].map((level) => (
                         <div
                             key={level}
                             className={`difficulty-option ${difficulty === level ? "selected" : ""
@@ -64,7 +64,7 @@ const GameSettings = ({ onSubmit }) => {
                 </div>
             </div>
             <Button className="start-button-settings" onClick={handleSubmit}>
-                START NEW GAME
+                EMPEZAR NUEVO JUEGO
             </Button>
         </div>
     );

@@ -25,7 +25,7 @@ const Home = () => {
         <div className="home-container">
             <div className="button-section">
                 <img src={logo} alt="Logo" className="logo"/>
-                <Button show={showModal} className="start-button" onClick={openModal}>START</Button>
+                <Button show={showModal} className="start-button" onClick={openModal}>EMPEZAR</Button>
             </div>
             <Modal show={showModal} onClose={closeModal}>
                 <GameSettings />

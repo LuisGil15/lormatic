@@ -832,7 +832,7 @@ const Quest = () => {
     return (
       <div className="quest-container">
         <div className="draws-container">
-          <span className="lore-text">DRAWS</span>
+          <span className="lore-text">SACAR</span>
           <div className="draws">
             <div className="draws-inner">
               <span>{draws}</span>
@@ -840,7 +840,7 @@ const Quest = () => {
           </div>
         </div>
         <div className={`ink-container ${glowInk ? "apper" : ""}`}>
-          <span className="lore-text">INKWELL</span>
+          <span className="lore-text">TINTERO</span>
           <div className={`ink ${glowInk ? "apper" : ""}`}>
             <div className="ink-inner">
               <span>{state.ink}</span>
@@ -872,7 +872,8 @@ const Quest = () => {
                 />
               ) : (
                 <div className="discard">
-                  <span>DISCARD</span>
+                  <span>PILA DE</span>
+                  <span>DESCARTE</span>
                 </div>
               )}
             </div>
@@ -881,7 +882,7 @@ const Quest = () => {
                 <Card />
               ) : (
                 <div className="deck">
-                  <span>DECK</span>
+                  <span>MAZO</span>
                 </div>
               )}
               {state.deck.length > 0 && (
@@ -904,7 +905,7 @@ const Quest = () => {
                 })
               ) : (
                 <div className="hand">
-                  <span>HAND</span>
+                  <span>MANO</span>
                 </div>
               )}
             </div>
@@ -916,7 +917,7 @@ const Quest = () => {
                 }}
                 className={"end-turn-btn"}
               >
-                <span>END TURN</span>
+                <span>TERMINAR TURNO</span>
               </Button>
             )}
           </div>
@@ -1023,7 +1024,7 @@ const Quest = () => {
                   className={"resolve-button"}
                   onClick={() => resolveActiveCard(activeCard)}
                 >
-                  <span>RESOLVE</span>
+                  <span>RESOLVER</span>
                 </Button>
               )}
             {makeDamage && (
@@ -1036,17 +1037,19 @@ const Quest = () => {
               <div className="duel-zone">
                 {
                   <Button onClick={handleBanish}>
-                    <span>{confirmBanish ? "CONFIRM BANISH" : "BANISH"}</span>
+                    <span>
+                      {confirmBanish ? "CONFIRMAR DESTIERRO" : "DESTERRAR"}
+                    </span>
                   </Button>
                 }
                 {activeCard.type === "character" && activeCard.exerted ? (
                   <Button onClick={handleChallenge}>
-                    <span>{makeDamage ? "CONFIRM" : "CHALLENGE"}</span>
+                    <span>{makeDamage ? "CONFIRMAR" : "DESAFIAR"}</span>
                   </Button>
                 ) : (
                   activeCard.type === "character" && (
                     <Button onClick={handleExert}>
-                      <span>{confirmExert ? "CONFIRM EXERT" : "EXERT"}</span>
+                      <span>{confirmExert ? "CONFIRMAR AGOTAR" : "AGOTAR"}</span>
                     </Button>
                   )
                 )}
@@ -1056,7 +1059,7 @@ const Quest = () => {
         )}
         {showOverlay && (
           <div className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}>
-            <div className="turn-overlay-message">YOUR TURN!!!</div>
+            <div className="turn-overlay-message">TU TURNO!!!</div>
           </div>
         )}
       </div>

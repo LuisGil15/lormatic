@@ -393,6 +393,13 @@ body::-webkit-scrollbar {
   z-index: 2;
 }
 
+.discard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .discard-table-top {
   display: flex;
   border: solid 1px #C3B27F;

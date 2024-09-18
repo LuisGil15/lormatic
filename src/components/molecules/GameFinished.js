@@ -16,13 +16,13 @@ const GameFinished = ({ lore, winner }) => {
           <span className="lore-game-over">{lore}</span>
         </div>
         <span className="winner">
-          {winner === "Ursula" ? "Ursula wins" : "Game won"}
+          {winner === "Ursula" ? "Ursula gano" : "Ursula fue derrotada"}
         </span>
         <span className="tittle">
-          {winner === "Ursula" ? "GAME OVER!" : "CONGRATULATIONS!"}
+          {winner === "Ursula" ? "FIN DEL JUEGO!" : "FELICIDADES!"}
         </span>
         <span className={"quitButton"} onClick={() => finishGame()}>
-          Quit {">"}
+          Salir {">"}
         </span>
       </div>
     );
