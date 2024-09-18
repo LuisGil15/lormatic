@@ -65,6 +65,7 @@ const Quest = () => {
     const [damageAmount, setDamageAmount] = useState(0);
     const [showOverlay, setShowOverlay] = useState(false);
     const [isFadingOut, setIsFadingOut] = useState(false);
+    const [showDiscardPile, setShowDiscardPile] = useState(false);
 
     const handleLoreChange = (delta) => {
         if (difficulty !== "Easy") {
@@ -492,7 +493,7 @@ const Quest = () => {
                 payload: [...tmpHand.slice(0, -1), tmpCard]
             });
 
-            await sleep(500);
+            await sleep(1000);
             setActiveCard(tmpCard);
 
             // Eliminar la última carta de tmpHand y actualizar el estado
@@ -826,6 +827,7 @@ const Quest = () => {
     window.sendToQuest = sendToQuest;
     window.playArea = state.playArea;
     window.setPlayAreaReady = setPlayAreaReady;
+    window.discardPile = discardPile;
 
     return (
       <div className="quest-container">
@@ -864,6 +866,9 @@ const Quest = () => {
                   properties={discardPile[discardPile.length - 1]}
                   showPrp={false}
                   className={"card-animated"}
+                  onClick={() =>
+                    discardPile.length > 0 && setShowDiscardPile(true)
+                  }
                 />
               ) : (
                 <div className="discard">
@@ -975,28 +980,59 @@ const Quest = () => {
             winner={winner}
           />
         </Modal>
+        {showDiscardPile && (
+          <div
+            className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDiscardPile(false);
+            }}
+          >
+            <div className="discard-table">
+              <div className="discard-table-top">
+                {discardPile.map((card) => {
+                  return (
+                    <Card
+                      key={"dct" + card.id}
+                      properties={{ ...card, flipped: true }}
+                      onClick={() => setActiveCard({ ...card, flipped: true })}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
         {activeCard && (
-          <div className="overlay" onClick={() => !turn && setActiveCard(null)}>
+          <div
+            className="overlay"
+            onClick={() => (!turn || showDiscardPile) && setActiveCard(null)}
+          >
             <Card
               properties={activeCard}
-              className={`preview-card ${turn ? "animated-preview" : ""}`}
+              className={`preview-card ${
+                turn || showDiscardPile ? "animated-preview" : ""
+              }`}
               showPrp={true}
             />
-            {activeCard.init && state.ink >= activeCard.inkCost && turn && (
-              <Button
-                className={"resolve-button"}
-                onClick={() => resolveActiveCard(activeCard)}
-              >
-                <span>RESOLVE</span>
-              </Button>
-            )}
+            {!showDiscardPile &&
+              activeCard.init &&
+              state.ink >= activeCard.inkCost &&
+              turn && (
+                <Button
+                  className={"resolve-button"}
+                  onClick={() => resolveActiveCard(activeCard)}
+                >
+                  <span>RESOLVE</span>
+                </Button>
+              )}
             {makeDamage && (
               <DamageCounter
                 damage={damageAmount}
                 onDamageClick={(e) => handleDamageAmount(e)}
               />
             )}
-            {!turn && (
+            {!turn && !showDiscardPile && (
               <div className="duel-zone">
                 {
                   <Button onClick={handleBanish}>

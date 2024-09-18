@@ -19,10 +19,8 @@
   overflow: hidden;
   color: white;
   aspect-ratio: 733 / 1024;
-  transition: all 5s ease;
   position: absolute;
   backface-visibility: hidden;
-  transition: all 5s ease;
 }
 
 .front-card {

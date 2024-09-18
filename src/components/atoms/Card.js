@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import Strength from "./Strength";
 import Shield from "./Shield";
 
@@ -6,22 +6,8 @@ import galery from "../../data/galery.json";
 
 import '../../assets/styles/components/atoms/Card.css';
 
-const initialState = {
-    imagePath: ""
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "SET_IMAGE_PATH":
-      return { ...state, imagePath: action.payload };
-    default:
-      return state;
-  }
-};
-
 const Card = ({ properties, className, onClick, showPrp}) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const [cardProperties] = useState(properties);
+    const [imagePath, setImagePath] = useState(null);
     const [isFlipped, setFlipped] = useState(properties ? properties.flipped : false);
     const [cardNumber, setCardNumber] = useState(properties ? properties.cardNumber : 0);
     const [name, setName] = useState(properties ? properties.name : "");
@@ -34,31 +20,30 @@ const Card = ({ properties, className, onClick, showPrp}) => {
     }
 
     useEffect(() => {
-        dispatch({
-          type: "SET_IMAGE_PATH",
-          payload: getImagePath(
-            cardProperties ? cardProperties.cardNumber : null
-          ),
-        });
+        setImagePath(
+          getImagePath(
+            properties ? properties.cardNumber : null
+          )
+        );
     }, []);
 
     useEffect(() => {
-      setFlipped(cardProperties ? cardProperties.flipped : false);
-      setCardNumber(cardProperties ? cardProperties.cardNumber : 0);
-      setName(cardProperties ? cardProperties.name : "");
-    }, [cardProperties]);
+      setFlipped(properties ? properties.flipped : false);
+      setCardNumber(properties ? properties.cardNumber : 0);
+      setName(properties ? properties.name : "");
+    }, [properties]);
 
     return (
       <div
         className={`body-card 
                 ${!isFlipped ? "flipped" : "notFlipped"}  
                 ${className ? className : ""}`}
-        onClick={() => onClick && onClick()}
+        onClick={(e) => {e.stopPropagation(e); onClick && onClick()}}
       >
-        {cardNumber != null && state.imagePath != null && (
+        {cardNumber != null && imagePath != null && (
           <img
             alt={name}
-            src={require(`../../${state.imagePath}`)}
+            src={require(`../../${imagePath}`)}
             className="front-card"
           />
         )}
@@ -70,13 +55,13 @@ const Card = ({ properties, className, onClick, showPrp}) => {
         <div className={`inner-card`}>
           {showPrp &&
             isFlipped &&
-            cardProperties &&
-            cardProperties.type === "character" && (
+            properties &&
+            properties.type === "character" && (
               <div>
                 <Shield
-                  value={cardProperties.defense - cardProperties.damage}
+                  value={properties.defense - properties.damage}
                 />
-                <Strength value={cardProperties.strength} />
+                <Strength value={properties.strength} />
               </div>
             )}
         </div>
