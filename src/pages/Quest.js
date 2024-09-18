@@ -68,7 +68,7 @@ const Quest = () => {
     const [showDiscardPile, setShowDiscardPile] = useState(false);
 
     const handleLoreChange = (delta) => {
-        if (difficulty !== "Easy") {
+        if (difficulty !== "Facil") {
             let initialDraws = 0;
             let drawIncrement = 0;
             let drawIncrementsAtLore = [];
@@ -76,7 +76,7 @@ const Quest = () => {
             switch (playersData.length) {
                 case 1:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 2;
                             break;
                         case "Normal":
@@ -84,8 +84,8 @@ const Quest = () => {
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
                             break;
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
@@ -96,16 +96,16 @@ const Quest = () => {
                     break;
                 case 2:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 2;
                             break;
                         case "Normal":
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 2;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [10, 30];
-                            if (difficulty === "Hard" || difficulty === "Extreme") {
+                            if (difficulty === "Dificil" || difficulty === "Extremo") {
                                 initialDraws = 3;
                             }
                             break;
@@ -115,16 +115,16 @@ const Quest = () => {
                     break;
                 case 3:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 3;
                             break;
                         case "Normal":
-                        case "Extreme":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
                             break;
-                        case "Hard":
+                        case "Dificil":
                             initialDraws = 4;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
@@ -135,16 +135,16 @@ const Quest = () => {
                     break;
                 case 4:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 3;
                             break;
                         case "Normal":
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [10, 30];
-                            if (difficulty === "Hard" || difficulty === "Extreme") {
+                            if (difficulty === "Dificil" || difficulty === "Extremo") {
                                 initialDraws = 4;
                             }
                             break;
@@ -333,10 +333,10 @@ const Quest = () => {
 
     const getDraws = () => {
         const drawsConfig = {
-            1: { Easy: 2, Normal: 2, Hard: 3, Extreme: 3 },
-            2: { Easy: 2, Normal: 2, Hard: 3, Extreme: 3 },
-            3: { Easy: 3, Normal: 3, Hard: 4, Extreme: 4 },
-            4: { Easy: 3, Normal: 3, Hard: 4, Extreme: 4 },
+            1: { Facil: 2, Normal: 2, Dificil: 3, Extremo: 3 },
+            2: { Facil: 2, Normal: 2, Dificil: 3, Extremo: 3 },
+            3: { Facil: 3, Normal: 3, Dificil: 4, Extremo: 4 },
+            4: { Facil: 3, Normal: 3, Dificil: 4, Extremo: 4 },
         };
 
         const draws = drawsConfig[players]?.[difficulty] || 0;
@@ -832,7 +832,7 @@ const Quest = () => {
     return (
       <div className="quest-container">
         <div className="draws-container">
-          <span className="lore-text">DRAWS</span>
+          <span className="lore-text">SACAR</span>
           <div className="draws">
             <div className="draws-inner">
               <span>{draws}</span>
@@ -840,7 +840,7 @@ const Quest = () => {
           </div>
         </div>
         <div className={`ink-container ${glowInk ? "apper" : ""}`}>
-          <span className="lore-text">INKWELL</span>
+          <span className="lore-text">TINTERO</span>
           <div className={`ink ${glowInk ? "apper" : ""}`}>
             <div className="ink-inner">
               <span>{state.ink}</span>
@@ -872,7 +872,8 @@ const Quest = () => {
                 />
               ) : (
                 <div className="discard">
-                  <span>DISCARD</span>
+                  <span>PILA DE</span>
+                  <span>DESCARTE</span>
                 </div>
               )}
             </div>
@@ -881,7 +882,7 @@ const Quest = () => {
                 <Card />
               ) : (
                 <div className="deck">
-                  <span>DECK</span>
+                  <span>MAZO</span>
                 </div>
               )}
               {state.deck.length > 0 && (
@@ -904,7 +905,7 @@ const Quest = () => {
                 })
               ) : (
                 <div className="hand">
-                  <span>HAND</span>
+                  <span>MANO</span>
                 </div>
               )}
             </div>
@@ -916,7 +917,7 @@ const Quest = () => {
                 }}
                 className={"end-turn-btn"}
               >
-                <span>END TURN</span>
+                <span>TERMINAR TURNO</span>
               </Button>
             )}
           </div>
@@ -1023,7 +1024,7 @@ const Quest = () => {
                   className={"resolve-button"}
                   onClick={() => resolveActiveCard(activeCard)}
                 >
-                  <span>RESOLVE</span>
+                  <span>RESOLVER</span>
                 </Button>
               )}
             {makeDamage && (
@@ -1036,17 +1037,19 @@ const Quest = () => {
               <div className="duel-zone">
                 {
                   <Button onClick={handleBanish}>
-                    <span>{confirmBanish ? "CONFIRM BANISH" : "BANISH"}</span>
+                    <span>
+                      {confirmBanish ? "CONFIRMAR DESTIERRO" : "DESTERRAR"}
+                    </span>
                   </Button>
                 }
                 {activeCard.type === "character" && activeCard.exerted ? (
                   <Button onClick={handleChallenge}>
-                    <span>{makeDamage ? "CONFIRM" : "CHALLENGE"}</span>
+                    <span>{makeDamage ? "CONFIRMAR" : "DESAFIAR"}</span>
                   </Button>
                 ) : (
                   activeCard.type === "character" && (
                     <Button onClick={handleExert}>
-                      <span>{confirmExert ? "CONFIRM EXERT" : "EXERT"}</span>
+                      <span>{confirmExert ? "CONFIRMAR AGOTAR" : "AGOTAR"}</span>
                     </Button>
                   )
                 )}
@@ -1056,7 +1059,7 @@ const Quest = () => {
         )}
         {showOverlay && (
           <div className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}>
-            <div className="turn-overlay-message">YOUR TURN!!!</div>
+            <div className="turn-overlay-message">TU TURNO!!!</div>
           </div>
         )}
       </div>
