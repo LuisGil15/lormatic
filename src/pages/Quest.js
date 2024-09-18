@@ -68,7 +68,7 @@ const Quest = () => {
     const [showDiscardPile, setShowDiscardPile] = useState(false);
 
     const handleLoreChange = (delta) => {
-        if (difficulty !== "Easy") {
+        if (difficulty !== "Facil") {
             let initialDraws = 0;
             let drawIncrement = 0;
             let drawIncrementsAtLore = [];
@@ -76,7 +76,7 @@ const Quest = () => {
             switch (playersData.length) {
                 case 1:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 2;
                             break;
                         case "Normal":
@@ -84,8 +84,8 @@ const Quest = () => {
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
                             break;
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
@@ -96,16 +96,16 @@ const Quest = () => {
                     break;
                 case 2:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 2;
                             break;
                         case "Normal":
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 2;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [10, 30];
-                            if (difficulty === "Hard" || difficulty === "Extreme") {
+                            if (difficulty === "Dificil" || difficulty === "Extremo") {
                                 initialDraws = 3;
                             }
                             break;
@@ -115,16 +115,16 @@ const Quest = () => {
                     break;
                 case 3:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 3;
                             break;
                         case "Normal":
-                        case "Extreme":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
                             break;
-                        case "Hard":
+                        case "Dificil":
                             initialDraws = 4;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [20];
@@ -135,16 +135,16 @@ const Quest = () => {
                     break;
                 case 4:
                     switch (difficulty) {
-                        case "Easy":
+                        case "Facil":
                             initialDraws = 3;
                             break;
                         case "Normal":
-                        case "Hard":
-                        case "Extreme":
+                        case "Dificil":
+                        case "Extremo":
                             initialDraws = 3;
                             drawIncrement = 1;
                             drawIncrementsAtLore = [10, 30];
-                            if (difficulty === "Hard" || difficulty === "Extreme") {
+                            if (difficulty === "Dificil" || difficulty === "Extremo") {
                                 initialDraws = 4;
                             }
                             break;
@@ -333,10 +333,10 @@ const Quest = () => {
 
     const getDraws = () => {
         const drawsConfig = {
-            1: { Easy: 2, Normal: 2, Hard: 3, Extreme: 3 },
-            2: { Easy: 2, Normal: 2, Hard: 3, Extreme: 3 },
-            3: { Easy: 3, Normal: 3, Hard: 4, Extreme: 4 },
-            4: { Easy: 3, Normal: 3, Hard: 4, Extreme: 4 },
+            1: { Facil: 2, Normal: 2, Dificil: 3, Extremo: 3 },
+            2: { Facil: 2, Normal: 2, Dificil: 3, Extremo: 3 },
+            3: { Facil: 3, Normal: 3, Dificil: 4, Extremo: 4 },
+            4: { Facil: 3, Normal: 3, Dificil: 4, Extremo: 4 },
         };
 
         const draws = drawsConfig[players]?.[difficulty] || 0;
