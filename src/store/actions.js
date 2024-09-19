@@ -4,17 +4,19 @@ export const tridentItem = ({ handleLoreChange }, init, cardInfo) => {
 
 export const confusedPresence = ({ playersData, setPlayersData }, init) => {
     if (init) {
+        console.log("Si entra aqui");
         let playerDataTmp = [...playersData];
 
         playerDataTmp.map((player) => {
             if (player.lore >= 2) {
-                return {...player, lore: player.lore - 2};
-            } 
-
-            return { ...player, lore: 0 };
+                player.lore -= 2;
+            } else {
+                player.lore = 0;
+            }
         });
 
-        setPlayersData(playerDataTmp);
+        console.log(playerDataTmp);
+        setPlayersData([...playerDataTmp]);
     }
 };
 

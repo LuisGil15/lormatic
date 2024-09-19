@@ -16,7 +16,7 @@ import { cardActionsMap } from "../store/actions";
 import "../assets/styles/pages/Quest.css";
 
 const initialState = {
-    ink: 0,
+    ink: 10,
     deck: [],
     hand: [],
     playArea: []
@@ -193,18 +193,20 @@ const Quest = () => {
 
         const newPlayersData = [
             ...playersData.filter((plyr) => plyr.id !== playerData.id),
-            playerData,
+            playerData
         ].sort((a, b) => a.id - b.id);
 
         setPlayersData(newPlayersData);
+        console.log("Old player data: ");
+        console.log(prevPlayersData);
+        console.log("New player data: ");
+        console.log(newPlayersData);
 
         if (!newPlayersData.filter((plyr) => plyr.lore < 20).length > 0) {
+            setLastState({ players: prevPlayersData, ursula: lore });
             setShowModal(true);
             setGameOver(true);
             setWinner("Players");
-            console.log("Prev data");
-            console.log(prevPlayersData);
-            setLastState({ players: prevPlayersData, ursula: lore });
         }
     };
 
@@ -398,7 +400,7 @@ const Quest = () => {
         }
 
         setTurn(false);
-        setShowOverlay(true);
+        !gameOver && setShowOverlay(true);
     };
 
     const readyCharacters = () => {

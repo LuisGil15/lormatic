@@ -22,7 +22,7 @@ const PlayerCounter = ({ lore, id, onClick }) => {
     };
 
     useEffect(() => {
-        handleLore(handleGlow());
+        handleGlow();
     }, [lore]);
 
     return (
