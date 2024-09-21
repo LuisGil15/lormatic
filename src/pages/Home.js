@@ -13,14 +13,6 @@ const Home = () => {
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
 
-    // const handleStartGame = ({ players, difficulty }) => {
-    //   // Aquí puedes manejar la lógica cuando se inicie un nuevo juego con las configuraciones seleccionadas.
-    //   console.log(
-    //     `Starting game with ${players} players and ${difficulty} difficulty.`
-    //   );
-    //   closeModal();
-    // };
-
     return (
         <div className="home-container">
             <div className="button-section">

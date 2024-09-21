@@ -16,7 +16,7 @@ import { cardActionsMap } from "../store/actions";
 import "../assets/styles/pages/Quest.css";
 
 const initialState = {
-    ink: 10,
+    ink: 0,
     deck: [],
     hand: [],
     playArea: []
@@ -197,10 +197,6 @@ const Quest = () => {
         ].sort((a, b) => a.id - b.id);
 
         setPlayersData(newPlayersData);
-        console.log("Old player data: ");
-        console.log(prevPlayersData);
-        console.log("New player data: ");
-        console.log(newPlayersData);
 
         if (!newPlayersData.filter((plyr) => plyr.lore < 20).length > 0) {
             setLastState({ players: prevPlayersData, ursula: lore });
@@ -368,8 +364,6 @@ const Quest = () => {
                 cardInfo,
                 init
             );
-        } else {
-            console.log(`Card action not found ${cardInfo.name}`);
         }
     };
 
@@ -695,7 +689,7 @@ const Quest = () => {
 
         if (state.deck.length > 0) {
             const topCard = state.deck.filter((cardTmp) => cardTmp.id === id)[0];
-            console.log(topCard);
+
             if (topCard.id) {
                 state.deck.shift();
 
