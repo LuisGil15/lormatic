@@ -66,6 +66,8 @@ const Quest = () => {
     const [showOverlay, setShowOverlay] = useState(false);
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [showDiscardPile, setShowDiscardPile] = useState(false);
+    const [glowItems, setGlowItems] = useState(false);
+    const [dev] = useState(false);
 
     const handleLoreChange = (delta) => {
         if (difficulty !== "Facil") {
@@ -477,13 +479,17 @@ const Quest = () => {
 
     const resolveHand = async (tmpHand, tmpInk, tmpPlayArea) => {
         if (tmpHand.length > 0 && !gameOver) {
-            const tmpCard = { ...tmpHand[tmpHand.length - 1], flipped: true };
+            let tmpCard = { ...tmpHand[tmpHand.length - 1], flipped: true };
+            let thereItems = false;
 
             if (tmpCard.cardNumber === 17 && tmpInk <= 6) {
                 tmpCard.init = false;
             }
 
-            // Actualizar la mano con la carta modificada
+            if (tmpCard.cardNumber === 21 && tmpPlayArea.filter((card) => card.type === "item").length > 0) {
+                thereItems = true;
+            }
+
             dispatch({
                 type: "SET_HAND",
                 payload: [...tmpHand.slice(0, -1), tmpCard]
@@ -492,54 +498,59 @@ const Quest = () => {
             await sleep(1000);
             setActiveCard(tmpCard);
 
-            // Eliminar la última carta de tmpHand y actualizar el estado
-            const updatedHand = tmpHand.slice(0, -1); // mano actualizada sin la última carta
+            const updatedHand = tmpHand.slice(0, -1);
+
             dispatch({
                 type: "SET_HAND",
                 payload: updatedHand
             });
 
-            if (tmpInk >= tmpCard.inkCost && tmpCard.init === false) {
+            if (
+                tmpInk >= tmpCard.inkCost &&
+                tmpCard.init === false &&
+                !thereItems
+            ) {
                 await sleep(2000);
                 setActiveCard(null);
 
-                // Verificar si la carta es de tipo "item" o "character"
                 if (tmpCard.type === "item" || tmpCard.type === "character") {
-                    const updatedCard = { ...tmpCard }; // Copia de la carta para evitar mutaciones
+                    const updatedCard = { ...tmpCard };
 
                     if (updatedCard.bodyguard) {
-                        updatedCard.exerted = true; // Modificar sin mutar el original
+                        updatedCard.exerted = true;
                     }
 
                     if (updatedCard.cardNumber === 12) {
-                        playCard(updatedCard, true); // Usamos la carta copiada
+                        playCard(updatedCard, true);
                     }
 
-                    // Asegurar la inmutabilidad de tmpPlayArea
-                    const updatedPlayArea = [...tmpPlayArea, updatedCard]; // Agregamos la carta copiada
+                    const updatedPlayArea = [...tmpPlayArea, updatedCard];
 
                     dispatch({
                         type: "SET_PLAY_AREA",
-                        payload: updatedPlayArea
+                        payload: updatedPlayArea,
                     });
 
-                    // Actualizar la referencia de tmpPlayArea
                     tmpPlayArea = updatedPlayArea;
                 } else {
                     playCard(tmpCard, true);
-                    setDiscardPile((prev) => [...prev, tmpCard]); // Añadir la carta al descarte
+                    setDiscardPile((prev) => [...prev, tmpCard]);
                 }
 
                 await sleep(1000);
 
-                // Continuar resolviendo la mano si quedan cartas
                 if (updatedHand.length > 0) {
-                    resolveHand(updatedHand, tmpInk, tmpPlayArea); // Llamar recursivamente con la mano y área actualizada
+                    resolveHand(updatedHand, tmpInk, tmpPlayArea);
                 } else {
                     sendToQuest([...tmpPlayArea]);
                     setIsPlaying(false);
                 }
-            } else if (tmpInk === 0 || tmpInk < tmpCard.inkCost || tmpCard.init === false) {
+            } else if (
+                (tmpInk === 0 ||
+                    tmpInk < tmpCard.inkCost ||
+                    tmpCard.init === false) &&
+                !thereItems
+            ) {
                 await sleep(2000);
                 setActiveCard(null);
 
@@ -547,17 +558,19 @@ const Quest = () => {
 
                 dispatch({
                     type: "SET_INK",
-                    payload: Math.max(tmpInk + 1, 0) // Aumentar la tinta
+                    payload: Math.max(tmpInk + 1, 0),
                 });
 
                 await sleep(1000);
 
                 if (updatedHand.length > 0) {
-                    resolveHand(updatedHand, tmpInk + 1, tmpPlayArea); // Llamar recursivamente con más ink
+                    resolveHand(updatedHand, tmpInk + 1, tmpPlayArea);
                 } else {
                     sendToQuest([...tmpPlayArea]);
                     setIsPlaying(false);
                 }
+            } else {
+                setActiveCard({ ...tmpCard, init: true });
             }
         }
     };
@@ -593,14 +606,28 @@ const Quest = () => {
 
     const banishCard = (cardID) => {
         let tmpPlayArea = [...state.playArea];
+        const updatedPlayArea = [
+            ...tmpPlayArea.filter((cardTmp) => cardTmp.id !== cardID),
+        ];
 
         dispatch({
             type: "SET_PLAY_AREA",
-            payload: [...tmpPlayArea.filter((cardTmp) => cardTmp.id !== cardID)]
+            payload: updatedPlayArea,
         });
 
         setDiscardPile((prev) => [...prev, { ...banishedCard }]);
         setBanishedCard(null);
+
+        if (glowItems) {
+            setGlowItems(false);
+
+            if (state.hand.length > 0) {
+                resolveHand(state.hand, state.ink, [...updatedPlayArea]);
+            } else {
+                sendToQuest([...updatedPlayArea]);
+                setIsPlaying(false);
+            }
+        }
     }
 
     const exertCard = (cardID) => {
@@ -633,54 +660,63 @@ const Quest = () => {
         let updatedPlayArea = [...state.playArea];
         let updatedInk = state.ink;
 
-        if (updatedInk >= activeCardTmp.inkCost) {
-            setActiveCard(null);
+        if (activeCardTmp.cardNumber !== 21) {
+            if (updatedInk >= activeCardTmp.inkCost) {
+                setActiveCard(null);
 
-            // Si la carta es de tipo "item" o "character"
-            if (activeCardTmp.type === "item" || activeCardTmp.type === "character") {
-                const updatedCard = { ...activeCardTmp }; // Crear una copia de la carta
-
-                if (updatedCard.bodyguard) {
-                    updatedCard.exerted = true; // Modificar la carta copiada
-                }
-
-                // Agregar la carta al playArea de manera inmutable
-                updatedPlayArea = [...updatedPlayArea, updatedCard];
-
-                dispatch({
-                    type: "SET_PLAY_AREA",
-                    payload: updatedPlayArea // Actualizar el playArea con la nueva carta
-                });
-
-            } else {
-                playCard(activeCardTmp, true);
-
+                // Si la carta es de tipo "item" o "character"
                 if (
-                    activeCardTmp.cardNumber !== 20 &&
-                    activeCardTmp.cardNumber !== 25
+                    activeCardTmp.type === "item" ||
+                    activeCardTmp.type === "character"
                 ) {
-                    // Agregar la carta al descarte de manera inmutable
-                    setDiscardPile((prev) => [...prev, activeCardTmp]);
+                    const updatedCard = { ...activeCardTmp }; // Crear una copia de la carta
+
+                    if (updatedCard.bodyguard) {
+                        updatedCard.exerted = true; // Modificar la carta copiada
+                    }
+
+                    // Agregar la carta al playArea de manera inmutable
+                    updatedPlayArea = [...updatedPlayArea, updatedCard];
+
+                    dispatch({
+                        type: "SET_PLAY_AREA",
+                        payload: updatedPlayArea, // Actualizar el playArea con la nueva carta
+                    });
+                } else {
+                    playCard(activeCardTmp, true);
+
+                    if (
+                        activeCardTmp.cardNumber !== 20 &&
+                        activeCardTmp.cardNumber !== 25
+                    ) {
+                        // Agregar la carta al descarte de manera inmutable
+                        setDiscardPile((prev) => [...prev, activeCardTmp]);
+                    }
                 }
+            } else {
+                setActiveCard(null);
+
+                handleInk();
+                updatedInk += 1;
+                // Incrementar la cantidad de ink de manera inmutable
+                dispatch({
+                    type: "SET_INK",
+                    payload: Math.max(state.ink + 1, 0),
+                });
+            }
+
+            // Llamar a resolveHand solo después de haber terminado con la carta activa
+            if (state.hand.length > 0) {
+                resolveHand([...state.hand], updatedInk, [...updatedPlayArea]); // Pasar copias inmutables de los arrays
+            } else {
+                sendToQuest([...updatedPlayArea]);
+                setIsPlaying(false);
             }
         } else {
+            setGlowItems(true);
             setActiveCard(null);
 
-            handleInk();
-            updatedInk += 1;
-            // Incrementar la cantidad de ink de manera inmutable
-            dispatch({
-                type: "SET_INK",
-                payload: Math.max(state.ink + 1, 0)
-            });
-        }
-
-        // Llamar a resolveHand solo después de haber terminado con la carta activa
-        if (state.hand.length > 0) {
-            resolveHand([...state.hand], updatedInk, [...updatedPlayArea]); // Pasar copias inmutables de los arrays
-        } else {
-            sendToQuest([...updatedPlayArea]);
-            setIsPlaying(false);
+            setDiscardPile((prev) => [...prev, activeCardTmp]);
         }
     };
 
@@ -703,21 +739,23 @@ const Quest = () => {
         }
     }
 
+    const clickCard = (card) => {
+        if (!turn || (glowItems && card.type === "item")) {
+            setActiveCard(card);
+        }
+    }
+
     useEffect(() => {
-        if (!gameReady) {
-            //If you enter direct to quest skiping game settings, redirect to home
+        if (!gameReady && !dev) {
             if (players < 1) navigate("/");
 
-            //Set draw number depends on players and difficult
             setDraws(getDraws());
 
-            //Shuffle cards and set on deck
             dispatch({
                 type: "SET_DECK",
                 payload: shuffleDeck(deckJson)
             });
 
-            //Set game at the begin
             if (state.playArea.length === 0) setGame();
         }
     }, []);
@@ -792,21 +830,21 @@ const Quest = () => {
 
     useEffect(() => {
         if (showOverlay) {
-          setIsFadingOut(false);
-
-          const showTimer = setTimeout(() => {
-            setIsFadingOut(true);
-          }, 1000);
-
-          const hideTimer = setTimeout(() => {
-            setShowOverlay(false);
             setIsFadingOut(false);
-          }, 2000);
 
-          return () => {
-            clearTimeout(showTimer);
-            clearTimeout(hideTimer);
-          };
+            const showTimer = setTimeout(() => {
+                setIsFadingOut(true);
+            }, 1000);
+
+            const hideTimer = setTimeout(() => {
+                setShowOverlay(false);
+                setIsFadingOut(false);
+            }, 2000);
+
+            return () => {
+                clearTimeout(showTimer);
+                clearTimeout(hideTimer);
+            };
         }
     }, [showOverlay]);
 
@@ -826,239 +864,242 @@ const Quest = () => {
     window.discardPile = discardPile;
 
     return (
-      <div className="quest-container">
-        <div className="draws-container">
-          <span className="lore-text">SACAR</span>
-          <div className="draws">
-            <div className="draws-inner">
-              <span>{draws}</span>
+        <div className="quest-container">
+            <div className="draws-container">
+                <span className="lore-text">SACAR</span>
+                <div className="draws">
+                    <div className="draws-inner">
+                        <span>{draws}</span>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div className={`ink-container ${glowInk ? "apper" : ""}`}>
-          <span className="lore-text">TINTERO</span>
-          <div className={`ink ${glowInk ? "apper" : ""}`}>
-            <div className="ink-inner">
-              <span>{state.ink}</span>
+            <div className={`ink-container ${glowInk ? "apper" : ""}`}>
+                <span className="lore-text">TINTERO</span>
+                <div className={`ink ${glowInk ? "apper" : ""}`}>
+                    <div className="ink-inner">
+                        <span>{state.ink}</span>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div className="title">
-          <span className="lore-text">URSULA</span>
-        </div>
-        <div className="lore-zone">
-          <CarruselCounter
-            lore={lore}
-            apper={glowInk}
-            handleLoreChange={handleLoreChange}
-          />
-        </div>
-        <div className="middle-zone">
-          <div className="first-column">
-            <div className="discard-zone">
-              {discardPile.length > 0 ? (
-                <Card
-                  key={"discard" + discardPile[discardPile.length - 1].id}
-                  properties={discardPile[discardPile.length - 1]}
-                  showPrp={false}
-                  className={"card-animated"}
-                  onClick={() =>
-                    discardPile.length > 0 && setShowDiscardPile(true)
-                  }
+            <div className="title">
+                <span className="lore-text">URSULA</span>
+            </div>
+            <div className="lore-zone">
+                <CarruselCounter
+                    lore={lore}
+                    apper={glowInk}
+                    handleLoreChange={handleLoreChange}
                 />
-              ) : (
-                <div className="discard">
-                  <span>PILA DE</span>
-                  <span>DESCARTE</span>
-                </div>
-              )}
             </div>
-            <div className="deck-zone">
-              {state.deck.length > 0 ? (
-                <Card />
-              ) : (
-                <div className="deck">
-                  <span>MAZO</span>
+            <div className="middle-zone">
+                <div className="first-column">
+                    <div className="discard-zone">
+                        {discardPile.length > 0 ? (
+                            <Card
+                                key={"discard" + discardPile[discardPile.length - 1].id}
+                                properties={discardPile[discardPile.length - 1]}
+                                showPrp={false}
+                                className={"card-animated"}
+                                onClick={() =>
+                                    discardPile.length > 0 && setShowDiscardPile(true)
+                                }
+                            />
+                        ) : (
+                            <div className="discard">
+                                <span>PILA DE</span>
+                                <span>DESCARTE</span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="deck-zone">
+                        {state.deck.length > 0 ? (
+                            <Card />
+                        ) : (
+                            <div className="deck">
+                                <span>MAZO</span>
+                            </div>
+                        )}
+                        {state.deck.length > 0 && (
+                            <span className="deck-cards">{state.deck.length}</span>
+                        )}
+                    </div>
                 </div>
-              )}
-              {state.deck.length > 0 && (
-                <span className="deck-cards">{state.deck.length}</span>
-              )}
-            </div>
-          </div>
-          <div className="second-column">
-            <div className="hand-zone">
-              {state.hand.length > 0 ? (
-                state.hand.map((card) => {
-                  return (
-                    <Card
-                      key={"hand" + card.id}
-                      properties={card}
-                      className={"newCard"}
-                      showPrp={false}
-                    />
-                  );
-                })
-              ) : (
-                <div className="hand">
-                  <span>MANO</span>
+                <div className="second-column">
+                    <div className="hand-zone">
+                        {state.hand.length > 0 ? (
+                            state.hand.map((card) => {
+                                return (
+                                    <Card
+                                        key={"hand" + card.id}
+                                        properties={card}
+                                        className={"newCard"}
+                                        showPrp={false}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <div className="hand">
+                                <span>MANO</span>
+                            </div>
+                        )}
+                    </div>
+                    {!turn && (
+                        <Button
+                            onClick={() => {
+                                setTurn(true);
+                                resolvePlayArea();
+                            }}
+                            className={"end-turn-btn"}
+                        >
+                            <span>TERMINAR TURNO</span>
+                        </Button>
+                    )}
                 </div>
-              )}
+                <div className="third-column">
+                    {playersData.map((player) => {
+                        return (
+                            <PlayerCounter
+                                key={player.id}
+                                lore={player.lore}
+                                id={player.id}
+                                onClick={(playerData) => handlePlayer(playerData)}
+                            />
+                        );
+                    })}
+                </div>
             </div>
-            {!turn && (
-              <Button
-                onClick={() => {
-                  setTurn(true);
-                  resolvePlayArea();
-                }}
-                className={"end-turn-btn"}
-              >
-                <span>TERMINAR TURNO</span>
-              </Button>
-            )}
-          </div>
-          <div className="third-column">
-            {playersData.map((player) => {
-              return (
-                <PlayerCounter
-                  key={player.id}
-                  lore={player.lore}
-                  id={player.id}
-                  onClick={(playerData) => handlePlayer(playerData)}
-                />
-              );
-            })}
-          </div>
-        </div>
-        <div className="game-zone">
-          <div className="carousel">
-            {state.playArea.length > 0 ? (
-              state.playArea.map((card) => {
-                return (
-                  <Card
-                    key={"game" + card.id}
-                    properties={card}
-                    onClick={() => !turn && setActiveCard(card)}
-                    showPrp={true}
-                    className={`game-card ${
-                      isPlaying && !card.ready ? "card-animated" : ""
-                    } 
-                                        ${
-                                          banishedCard &&
-                                          card.id === banishedCard.id
+            <div className="game-zone">
+                <div className="carousel">
+                    {state.playArea.length > 0 ? (
+                        state.playArea.map((card) => {
+                            return (
+                                <Card
+                                    key={"game" + card.id}
+                                    properties={card}
+                                    onClick={() => clickCard(card)}
+                                    showPrp={true}
+                                    className={`game-card ${isPlaying && !card.ready ? "card-animated" : ""
+                                        } 
+                                        ${banishedCard &&
+                                            card.id === banishedCard.id
                                             ? "banished-card"
                                             : ""
                                         }
-                                        ${
-                                          card.exerted &&
-                                          (!banishedCard ||
-                                            card.id !== banishedCard.id)
+                                        ${card.exerted &&
+                                            (!banishedCard ||
+                                                card.id !== banishedCard.id)
                                             ? "exerted"
                                             : ""
                                         }
-                                        ${
-                                          !card.ready &&
-                                          card.type !== "item" &&
-                                          !card.exerted
+                                        ${!card.ready &&
+                                            card.type !== "item" &&
+                                            !card.exerted
                                             ? "grayscale-image"
                                             : ""
+                                        }
+                                        ${glowItems && card.type === "item"
+                                            ? "glowing-card"
+                                            : "shadowing-card"
                                         }`}
-                  />
-                );
-              })
-            ) : (
-              <span></span>
-            )}
-          </div>
-        </div>
-        <Modal show={showModal} onClose={() => continueGame()}>
-          <GameFinished
-            lore={winner === "Ursula" ? lore : getTotalLore()}
-            winner={winner}
-          />
-        </Modal>
-        {showDiscardPile && (
-          <div
-            className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowDiscardPile(false);
-            }}
-          >
-            <div className="discard-table">
-              <div className="discard-table-top">
-                {discardPile.map((card) => {
-                  return (
-                    <Card
-                      key={"dct" + card.id}
-                      properties={{ ...card, flipped: true }}
-                      onClick={() => setActiveCard({ ...card, flipped: true })}
-                    />
-                  );
-                })}
-              </div>
+                                />
+                            );
+                        })
+                    ) : (
+                        <span></span>
+                    )}
+                </div>
             </div>
-          </div>
-        )}
-        {activeCard && (
-          <div
-            className="overlay"
-            onClick={() => (!turn || showDiscardPile) && setActiveCard(null)}
-          >
-            <Card
-              properties={activeCard}
-              className={`preview-card ${
-                turn || showDiscardPile ? "animated-preview" : ""
-              }`}
-              showPrp={true}
-            />
-            {!showDiscardPile &&
-              activeCard.init &&
-              state.ink >= activeCard.inkCost &&
-              turn && (
-                <Button
-                  className={"resolve-button"}
-                  onClick={() => resolveActiveCard(activeCard)}
+            <Modal show={showModal} onClose={() => continueGame()}>
+                <GameFinished
+                    lore={winner === "Ursula" ? lore : getTotalLore()}
+                    winner={winner}
+                />
+            </Modal>
+            {showDiscardPile && (
+                <div
+                    className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDiscardPile(false);
+                    }}
                 >
-                  <span>RESOLVER</span>
-                </Button>
-              )}
-            {makeDamage && (
-              <DamageCounter
-                damage={damageAmount}
-                onDamageClick={(e) => handleDamageAmount(e)}
-              />
+                    <div className="discard-table">
+                        <div className="discard-table-top">
+                            {discardPile.map((card) => {
+                                return (
+                                    <Card
+                                        key={"dct" + card.id}
+                                        properties={{ ...card, flipped: true }}
+                                        onClick={() => setActiveCard({ ...card, flipped: true })}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
             )}
-            {!turn && !showDiscardPile && (
-              <div className="duel-zone">
-                {
-                  <Button onClick={handleBanish}>
-                    <span>
-                      {confirmBanish ? "CONFIRMAR DESTIERRO" : "DESTERRAR"}
-                    </span>
-                  </Button>
-                }
-                {activeCard.type === "character" && activeCard.exerted ? (
-                  <Button onClick={handleChallenge}>
-                    <span>{makeDamage ? "CONFIRMAR" : "DESAFIAR"}</span>
-                  </Button>
-                ) : (
-                  activeCard.type === "character" && (
-                    <Button onClick={handleExert}>
-                      <span>{confirmExert ? "CONFIRMAR AGOTAR" : "AGOTAR"}</span>
-                    </Button>
-                  )
-                )}
-              </div>
+            {activeCard && (
+                <div
+                    className="overlay"
+                    onClick={() =>
+                        (!turn || showDiscardPile || glowItems) && setActiveCard(null)
+                    }
+                >
+                    <Card
+                        properties={activeCard}
+                        className={`preview-card ${turn || showDiscardPile ? "animated-preview" : ""
+                            }`}
+                        showPrp={true}
+                    />
+                    {!showDiscardPile &&
+                        activeCard.init &&
+                        state.ink >= activeCard.inkCost &&
+                        turn && (
+                            <Button
+                                className={"resolve-button"}
+                                onClick={() => resolveActiveCard(activeCard)}
+                            >
+                                <span>{activeCard.cardNumber === 21 ? "SELECCIONAR" : "RESOLVER"}</span>
+                            </Button>
+                        )}
+                    {makeDamage && (
+                        <DamageCounter
+                            damage={damageAmount}
+                            onDamageClick={(e) => handleDamageAmount(e)}
+                        />
+                    )}
+                    {(!turn || glowItems) && !showDiscardPile && (
+                        <div className="duel-zone">
+                            {
+                                <Button onClick={handleBanish}>
+                                    <span>
+                                        {confirmBanish ? "CONFIRMAR DESTIERRO" : "DESTERRAR"}
+                                    </span>
+                                </Button>
+                            }
+                            {activeCard.type === "character" && activeCard.exerted ? (
+                                <Button onClick={handleChallenge}>
+                                    <span>{makeDamage ? "CONFIRMAR" : "DESAFIAR"}</span>
+                                </Button>
+                            ) : (
+                                activeCard.type === "character" && (
+                                    <Button onClick={handleExert}>
+                                        <span>
+                                            {confirmExert ? "CONFIRMAR AGOTAR" : "AGOTAR"}
+                                        </span>
+                                    </Button>
+                                )
+                            )}
+                        </div>
+                    )}
+                </div>
             )}
-          </div>
-        )}
-        {showOverlay && (
-          <div className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}>
-            <div className="turn-overlay-message">TU TURNO!!!</div>
-          </div>
-        )}
-      </div>
+            {showOverlay && (
+                <div className={`turn-overlay ${isFadingOut ? "fade-out" : ""}`}>
+                    <div className="turn-overlay-message">TU TURNO!!!</div>
+                </div>
+            )}
+        </div>
     );
 };
 
