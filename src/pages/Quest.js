@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/atoms/Button";
@@ -19,21 +19,24 @@ const initialState = {
     ink: 0,
     deck: [],
     hand: [],
-    playArea: []
+    playArea: [],
+    liveTurn: false
 };
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case "SET_INK":
-            return { ...state, ink: action.payload };
-        case "SET_DECK":
-            return { ...state, deck: action.payload };
-        case "SET_HAND":
-            return { ...state, hand: action.payload };
-        case "SET_PLAY_AREA":
-            return { ...state, playArea: action.payload };
-        default:
-            return state;
+      case "SET_INK":
+        return { ...state, ink: action.payload };
+      case "SET_DECK":
+        return { ...state, deck: action.payload };
+      case "SET_HAND":
+        return { ...state, hand: action.payload };
+      case "SET_PLAY_AREA":
+        return { ...state, playArea: action.payload };
+      case "SET_LIVE_TURN":
+        return { ...state, liveTurn: action.payload };
+      default:
+        return state;
     }
 };
 
@@ -42,6 +45,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const Quest = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const resolveBtnRef = useRef(null);
+    const endTurnBtnRef = useRef(null);
+    const overlayRef = useRef(null);
     const { players, difficulty } = location.state || {};
     const [state, dispatch] = useReducer(reducer, initialState);
     const [showModal, setShowModal] = useState(false);
@@ -67,6 +73,7 @@ const Quest = () => {
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [showDiscardPile, setShowDiscardPile] = useState(false);
     const [glowItems, setGlowItems] = useState(false);
+
     const [dev] = useState(false);
 
     const handleLoreChange = (delta) => {
@@ -745,7 +752,43 @@ const Quest = () => {
         }
     }
 
+    const handleKey = (event) => {
+        // TO DO - Some problems in implementation
+        // if (event.code === "Space") {
+        //     if (
+        //       !showDiscardPile &&
+        //       activeCard !== null &&
+        //       activeCard.init &&
+        //       state.ink >= activeCard.inkCost &&
+        //       state.turn &&
+        //       resolveBtnRef.current
+        //     ) {
+        //         resolveBtnRef.current.click();
+        //     } else if (!state.turn && endTurnBtnRef.current) {
+        //       endTurnBtnRef.current.click();
+        //     } else {
+        //         console.log(endTurnBtnRef)
+        //     }
+        // } else if (event.code === "Escape") {
+        //     if (
+        //       !state.turn ||
+        //       (showDiscardPile && activeCard !== null) ||
+        //       glowItems
+        //     ) {
+        //       setActiveCard(null);
+        //     } else if (showDiscardPile && overlayRef.current) {
+        //         overlayRef.current().click();
+        //     }
+        // }
+    }
+
     useEffect(() => {
+        const handleKeyup = (event) => {
+          handleKey(event);
+        };
+
+        window.addEventListener("keyup", handleKeyup);
+
         if (!gameReady && !dev) {
             if (players < 1) navigate("/");
 
@@ -758,6 +801,10 @@ const Quest = () => {
 
             if (state.playArea.length === 0) setGame();
         }
+
+        return () => {
+          window.removeEventListener("keydown", handleKeyup);
+        };
     }, []);
 
     useEffect(() => {
@@ -847,6 +894,13 @@ const Quest = () => {
             };
         }
     }, [showOverlay]);
+
+    useEffect(() => {
+        dispatch({
+            type: "SET_LIVE_STATE",
+            payload: turn
+        });
+    }, [turn]);
 
     window.handleLoreChange = handleLoreChange;
     window.resolveHand = resolveHand;
@@ -945,6 +999,7 @@ const Quest = () => {
                     </div>
                     {!turn && (
                         <Button
+                            ref={endTurnBtnRef}
                             onClick={() => {
                                 setTurn(true);
                                 resolvePlayArea();
@@ -1040,6 +1095,7 @@ const Quest = () => {
             )}
             {activeCard && (
                 <div
+                    ref={overlayRef}
                     className="overlay"
                     onClick={() =>
                         (!turn || showDiscardPile || glowItems) && setActiveCard(null)
@@ -1056,6 +1112,7 @@ const Quest = () => {
                         state.ink >= activeCard.inkCost &&
                         turn && (
                             <Button
+                                ref={resolveBtnRef}
                                 className={"resolve-button"}
                                 onClick={() => resolveActiveCard(activeCard)}
                             >
