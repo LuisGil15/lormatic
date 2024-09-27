@@ -54,11 +54,11 @@ export const lightningStorm = ({ playersData, setPlayersData }) => {
     let playerDataTmp = [...playersData];
 
     playerDataTmp.map((player) => {
-        if (player.lore >= 3) {
-            return { ...player, lore: player.lore - 3 };
-        } 
-        
-        return { ...player, lore: 0 };
+      if (player.lore >= 3) {
+        player.lore -= 3;
+      } else {
+        player.lore = 0;
+      }
     });
 
     setPlayersData(playerDataTmp);
