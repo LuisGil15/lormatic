@@ -1,12 +1,15 @@
 {
   "files": {
-    "main.css": "/lormatic/static/css/main.a4438b93.css",
-    "main.js": "/lormatic/static/js/main.99430067.js",
+    "main.css": "/lormatic/static/css/main.544d73c5.css",
+    "main.js": "/lormatic/static/js/main.57a8c171.js",
     "static/media/questBG.JPG": "/lormatic/static/media/questBG.2776da7b39fdd5e4e90a.JPG",
     "static/media/cardBack.jpg": "/lormatic/static/media/cardBack.8fe86e97bdf4f8edf411.jpg",
     "static/media/IMG_7378.PNG": "/lormatic/static/media/IMG_7378.7b3cc28eda6284235f18.PNG",
     "static/media/lorcanaBackground.JPG": "/lormatic/static/media/lorcanaBackground.3de1d7c7acf1895ce2f3.JPG",
     "static/media/lorcanaBG2.png": "/lormatic/static/media/lorcanaBG2.ee146b670a39ecb913d0.png",
+    "static/media/Winner.mp3": "/lormatic/static/media/Winner.ab81399a3ac9f0ca5740.mp3",
+    "static/media/Banished.mp3": "/lormatic/static/media/Banished.c5e838e07abe773f0a7e.mp3",
+    "static/media/GameOver.mp3": "/lormatic/static/media/GameOver.ce3a1290d5fad8598882.mp3",
     "static/media/loreCounter.png": "/lormatic/static/media/loreCounter.bb453e806211c0768101.png",
     "static/media/shield-lorcana.png": "/lormatic/static/media/shield-lorcana.8d55d5e7780407fa9420.png",
     "static/media/strength.png": "/lormatic/static/media/strength.5db77559b3c74217446f.png",
@@ -28,6 +31,7 @@
     "static/media/10-Sombrerero-loco-Deep-Trouble.webp": "/lormatic/static/media/10-Sombrerero-loco-Deep-Trouble.650318756fe887bfdabd.webp",
     "static/media/09-Jetsam-Deep-Trouble.webp": "/lormatic/static/media/09-Jetsam-Deep-Trouble.902682437cba7846ae19.webp",
     "static/media/17-Volcar-Deep-Trouble.webp": "/lormatic/static/media/17-Volcar-Deep-Trouble.165ee70c8395a1361d1d.webp",
+    "static/media/Damage.mp3": "/lormatic/static/media/Damage.e2d32b7bbace0a6d558c.mp3",
     "static/media/08-Jafar-Deep-Trouble.webp": "/lormatic/static/media/08-Jafar-Deep-Trouble.99cb82973769d5a9e4ca.webp",
     "static/media/20-Magia-Enredadora-Deep-Trouble.webp": "/lormatic/static/media/20-Magia-Enredadora-Deep-Trouble.0fc1254bf2d5702b5214.webp",
     "static/media/30-Contrato-de-ursula-Deep-Trouble.webp": "/lormatic/static/media/30-Contrato-de-ursula-Deep-Trouble.7bfda1febbb1e4358b12.webp",
@@ -43,13 +47,17 @@
     "static/media/21-Golpe-Afortunado-Deep-Trouble.webp": "/lormatic/static/media/21-Golpe-Afortunado-Deep-Trouble.035450095f0d7240212e.webp",
     "static/media/19-Ola-Aplastante-Deep-Trouble.webp": "/lormatic/static/media/19-Ola-Aplastante-Deep-Trouble.07f819353fbb1b960918.webp",
     "static/media/25-Golpe-de-Tentaculo-Deep-Trouble.webp": "/lormatic/static/media/25-Golpe-de-Tentaculo-Deep-Trouble.14ec5a79a7691129f10e.webp",
+    "static/media/FlipCard.mp3": "/lormatic/static/media/FlipCard.8c6d2bbc541785235398.mp3",
+    "static/media/DrawCardAI.mp3": "/lormatic/static/media/DrawCardAI.9ded43681184af5364e6.mp3",
     "static/media/logo.png": "/lormatic/static/media/logo.e3d7b19267c9051c242e.png",
+    "static/media/DrawCard.mp3": "/lormatic/static/media/DrawCard.c45d9c5fc804dc7a8e75.mp3",
+    "static/media/InkSplash.mp3": "/lormatic/static/media/InkSplash.cdfe7473960f3e3fed1d.mp3",
     "index.html": "/lormatic/index.html",
-    "main.a4438b93.css.map": "/lormatic/static/css/main.a4438b93.css.map",
-    "main.99430067.js.map": "/lormatic/static/js/main.99430067.js.map"
+    "main.544d73c5.css.map": "/lormatic/static/css/main.544d73c5.css.map",
+    "main.57a8c171.js.map": "/lormatic/static/js/main.57a8c171.js.map"
   },
   "entrypoints": [
-    "static/css/main.a4438b93.css",
-    "static/js/main.99430067.js"
+    "static/css/main.544d73c5.css",
+    "static/js/main.57a8c171.js"
   ]
 }
