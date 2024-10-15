@@ -9,6 +9,14 @@ import Modal from "../components/molecules/Modal";
 import GameFinished from "../components/molecules/GameFinished";
 import DamageCounter from "../components/molecules/DamageCounter";
 
+import drawCardSound from "../assets/sounds/DrawCard.mp3";
+import inkSplashSound from "../assets/sounds/InkSplash.mp3";
+import flipCardSound from "../assets/sounds/FlipCard.mp3";
+import damageSound from "../assets/sounds/Damage.mp3";
+import banishedSound from "../assets/sounds/Banished.mp3";
+import gameOverSound from "../assets/sounds/GameOver.mp3";
+import winnerSound from "../assets/sounds/Winner.mp3";
+
 import deckJson from "../data/deck.json";
 
 import { cardActionsMap } from "../store/actions";
@@ -75,6 +83,11 @@ const Quest = () => {
     const [glowItems, setGlowItems] = useState(false);
 
     const [dev] = useState(false);
+
+    const playSound = (sound) => {
+        const audio = new Audio(sound);
+        audio.play();
+    };
 
     const handleLoreChange = (delta) => {
         if (difficulty !== "Facil") {
@@ -190,7 +203,10 @@ const Quest = () => {
     }
 
     const handleInk = async () => {
+        const audio = new Audio(inkSplashSound);
+
         setGlowInk(true);
+        audio.play();
 
         await sleep(300);
 
@@ -246,12 +262,16 @@ const Quest = () => {
             setMakeDamage(true);
         } else {
             if ((damageAmount >= activeCard.defense) || (activeCard.damage + damageAmount >= activeCard.defense)) {
+                const audio = new Audio(damageSound);
+                audio.play();
+
                 setBanishedCard({ ...activeCard });
                 setActiveCard(null);
             } else {
                 const currentDmg = activeCard.damage;
                 const tmpCard = { ...activeCard, damage: currentDmg + damageAmount };
                 const tmpPlayArea = [...state.playArea];
+                const audio = new Audio(damageSound);
                 const updatedPlayArea = tmpPlayArea.map((card) => {
                     if (card.id === tmpCard.id) {
                         return { ...tmpCard }
@@ -259,6 +279,8 @@ const Quest = () => {
 
                     return card;
                 });
+
+                audio.play();
 
                 dispatch({
                     type: "SET_PLAY_AREA",
@@ -278,6 +300,8 @@ const Quest = () => {
         for (let i = 0; i < num2Draw; i++) {
             if (state.deck.length > 0 && !gameOver) {
                 const topCard = state.deck[0];
+                const audio = new Audio(drawCardSound);
+                audio.play();
 
                 state.deck.shift();
 
@@ -464,6 +488,9 @@ const Quest = () => {
                 } else {
                     const updatedPlayArea = playAreaTmp.filter(card => card.id !== cardTmp.id);
 
+                    const audio = new Audio(banishedSound);
+                    audio.play();
+
                     setDiscardPile((prev) => [...prev, cardTmp]);
 
                     dispatch({
@@ -486,8 +513,12 @@ const Quest = () => {
 
     const resolveHand = async (tmpHand, tmpInk, tmpPlayArea) => {
         if (tmpHand.length > 0 && !gameOver) {
+            const audio = new Audio(flipCardSound);
+            audio.play();
+            
             let tmpCard = { ...tmpHand[tmpHand.length - 1], flipped: true };
             let thereItems = false;
+            
 
             if (tmpCard.cardNumber === 17 && tmpInk <= 6) {
                 tmpCard.init = false;
@@ -541,6 +572,10 @@ const Quest = () => {
                     tmpPlayArea = updatedPlayArea;
                 } else {
                     playCard(tmpCard, true);
+                    
+                    const audio = new Audio(banishedSound);
+                    audio.play();
+
                     setDiscardPile((prev) => [...prev, tmpCard]);
                 }
 
@@ -613,9 +648,12 @@ const Quest = () => {
 
     const banishCard = (cardID) => {
         let tmpPlayArea = [...state.playArea];
+        const audio = new Audio(banishedSound);
         const updatedPlayArea = [
             ...tmpPlayArea.filter((cardTmp) => cardTmp.id !== cardID),
         ];
+
+        audio.play();
 
         dispatch({
             type: "SET_PLAY_AREA",
@@ -623,6 +661,8 @@ const Quest = () => {
         });
 
         setDiscardPile((prev) => [...prev, { ...banishedCard }]);
+
+
         setBanishedCard(null);
 
         if (glowItems) {
@@ -697,6 +737,8 @@ const Quest = () => {
                         activeCardTmp.cardNumber !== 25
                     ) {
                         // Agregar la carta al descarte de manera inmutable
+                        const audio = new Audio(banishedSound);
+                        audio.play();
                         setDiscardPile((prev) => [...prev, activeCardTmp]);
                     }
                 }
@@ -722,6 +764,9 @@ const Quest = () => {
         } else {
             setGlowItems(true);
             setActiveCard(null);
+
+            const audio = new Audio(banishedSound);
+            audio.play();
 
             setDiscardPile((prev) => [...prev, activeCardTmp]);
         }
@@ -871,7 +916,7 @@ const Quest = () => {
     useEffect(() => {
         if (banishedCard !== null) {
             const timer = setTimeout(() => banishCard(banishedCard.id), 1000);
-            return () => clearTimeout(timer);;
+            return () => clearTimeout(timer);
         }
     }, [banishedCard]);
 
@@ -901,6 +946,17 @@ const Quest = () => {
             payload: turn
         });
     }, [turn]);
+
+    useEffect(() => {
+        let audio = null; 
+        if (winner === "Ursula") {
+            audio = new Audio(gameOverSound);
+        } else if (winner === "Players") {
+          audio = new Audio(winnerSound);
+        }
+
+        audio && audio.play();
+    }, [winner])
 
     window.handleLoreChange = handleLoreChange;
     window.resolveHand = resolveHand;
